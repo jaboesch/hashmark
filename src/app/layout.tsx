@@ -4,6 +4,7 @@ import "./globals.css";
 import clsx from "clsx";
 import { Nav } from "@/components/nav";
 import RootContainer from "@/components/rootContainer";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,8 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={clsx("flex min-h-screen", inter.className)}>
-        <Nav />
-        <RootContainer>{children}</RootContainer>
+        <Providers>
+          <Nav />
+          <RootContainer>{children}</RootContainer>
+        </Providers>
       </body>
     </html>
   );
