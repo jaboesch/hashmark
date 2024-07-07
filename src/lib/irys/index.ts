@@ -1,29 +1,39 @@
-import { Account } from "viem";
-import { UseWalletClientReturnType } from "wagmi";
 import { WebIrys } from "@irys/sdk";
 import pica from "pica";
 import Query from "@irys/query";
+import { IrysItem, IrysPaymentToken } from "./types";
+import {
+  IRYS_DEFAULT_NODE_URL,
+  IRYS_GATEWAY_DOWNLOAD_URL,
+  IRYS_GRAPHQL_URL,
+  IRYS_NETWORKS,
+  IRYS_PAYMENT_TOKEN_NAMES,
+  IRYS_PROVIDER_TYPES,
+  PLACEHOLDER_APPLICATION_ID,
+} from "./constants";
+import { ViemClient } from "@/utils/applicationTypes";
 
-const nodeUrl = "https://node2.irys.xyz";
-// const nodeUrl = "https://devnet.irys.xyz";
-
-export const getWebIrys = async (client: UseWalletClientReturnType) => {
-  const rpcURL = "https://polygon-mumbai.g.alchemy.com/v2/demo";
-  const token = "matic";
-  console.log("sendTransaction=", client.data?.sendTransaction);
-  const provider = client.data;
-  if (!provider) throw new Error(`Cannot find wallet`);
+export const getWebIrysInstance = async ({
+  client,
+  paymentToken,
+}: {
+  client: ViemClient;
+  paymentToken?: IrysPaymentToken;
+}) => {
+  const token: IrysPaymentToken =
+    paymentToken ?? IRYS_PAYMENT_TOKEN_NAMES.BASE_ETH;
 
   const irysWallet = {
-    name: "viemv2",
-    provider,
+    name: IRYS_PROVIDER_TYPES.VIEM_V2,
+    provider: client,
   };
 
   const webIrys = new WebIrys({
-    url: nodeUrl,
+    url: IRYS_DEFAULT_NODE_URL,
     token: token,
     wallet: irysWallet,
   });
+
   await webIrys.ready();
   return webIrys;
 };
@@ -72,12 +82,12 @@ const resizeImage = async (
 
 export const uploadImage = async (
   originalBlob: Blob,
-  w: UseWalletClientReturnType,
+  client: ViemClient,
   category?: string
 ) => {
   try {
     // Initialize WebIrys
-    const webIrys = await getWebIrys(w);
+    const webIrys = await getWebIrysInstance({ client });
 
     // Resize image to be less than 100 Kib
     const resizedBlob = await resizeImage(originalBlob);
@@ -89,7 +99,6 @@ export const uploadImage = async (
     console.log("Image file size: ", imageFile.size);
 
     // If imageFile.size < 100 Kib, it's free to upload, don't even check funding
-    // Adding this check as a code example, but in our case we know our image is less than 100 Kib
     if (imageFile.size >= 102400) {
       // Fund
       const loadedBalance = webIrys.utils.fromAtomic(
@@ -111,34 +120,24 @@ export const uploadImage = async (
     }
     const tags = [
       { name: "Content-Type", value: "image/jpeg" },
-      { name: "application-id", value: "1234" },
+      { name: "application-id", value: PLACEHOLDER_APPLICATION_ID },
     ];
     if (category) {
       tags.push({ name: "category", value: category });
     }
-    //@ts-ignore
+
     const receipt = await webIrys.uploadFile(imageFile, { tags });
-    console.log("🚀 ~ receipt:", receipt);
-    console.log(`Data uploaded ==> https://gateway.irys.xyz/${receipt.id}`);
+    console.log("Logging receipt", receipt);
+    console.log(`Data uploaded ==> ${IRYS_GATEWAY_DOWNLOAD_URL(receipt.id)}`);
   } catch (e) {
     console.error("Error uploading data", e);
   }
 };
 
-interface Item {
-  id: string;
-  address: string;
-  timestamp: number;
-}
-
-export const fetchImages = async ({
-  category,
-}: {
-  category: string | null;
-}): Promise<Item[]> => {
-  const myQuery = new Query({ url: `${nodeUrl}/graphql` });
+export const getAllImages = async (): Promise<IrysItem[]> => {
+  const myQuery = new Query({ url: IRYS_GRAPHQL_URL(IRYS_NETWORKS.MAINNET) });
   const TAGS_TO_FILTER = [
-    { name: "application-id", values: [process.env.NEXT_PUBLIC_APP_ID] },
+    { name: "application-id", values: [PLACEHOLDER_APPLICATION_ID] },
     { name: "Content-Type", values: ["image/jpeg"] },
   ];
 
@@ -154,14 +153,12 @@ export const fetchImages = async ({
           value: true,
         },
       })
-      //@ts-ignore
       .tags(TAGS_TO_FILTER)
       .sort("DESC");
 
-    // Check if results exist and cast to array of Item objects
-    return results ? (results as Item[]) : [];
+    return results ? (results as IrysItem[]) : [];
   } catch (error) {
     console.error("Failed to fetch images:", error);
-    return []; // Return an empty array in case of error
+    return [];
   }
 };
