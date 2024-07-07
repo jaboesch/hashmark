@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={clsx("flex min-h-screen px-4", inter.className)}>
+      <body className={clsx("flex min-h-screen", inter.className)}>
         <Nav />
         <RootContainer>{children}</RootContainer>
       </body>

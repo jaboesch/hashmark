@@ -2,18 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Basic editor styles */
 .tiptap {
   :first-child {
     margin-top: 0;
   }
 
   /* List styles */
-  ul,
+  ul, 
   ol {
     padding: 0 1rem;
     margin: 1.25rem 1rem 1.25rem 0.4rem;
-
+    
     li p {
       margin-top: 0.25em;
       margin-bottom: 0.25em;
@@ -21,55 +20,55 @@
   }
 
   /* Heading styles */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
+  h1, 
+  h2, 
+  h3, 
+  h4, 
+  h5, 
   h6 {
     line-height: 1.1;
     margin-top: 2.5rem;
     text-wrap: pretty;
   }
 
-  h1,
+  h1, 
   h2 {
     margin-top: 3.5rem;
     margin-bottom: 1.5rem;
   }
 
-  h1 {
-    font-size: 1.4rem;
+  h1 { 
+    font-size: 1.4rem; 
   }
 
-  h2 {
-    font-size: 1.2rem;
+  h2 { 
+    font-size: 1.2rem; 
   }
 
-  h3 {
-    font-size: 1.1rem;
+  h3 { 
+    font-size: 1.1rem; 
   }
 
-  h4,
-  h5,
-  h6 {
-    font-size: 1rem;
+  h4, 
+  h5, 
+  h6 { 
+    font-size: 1rem; 
   }
 
   /* Code and preformatted text styles */
   code {
-    background-color: var(--purple-light);
+    background-color: #ff0000;
     border-radius: 0.4rem;
-    color: var(--black);
+    color: #000000;
     font-size: 0.85rem;
     padding: 0.25em 0.3em;
   }
 
   pre {
-    background: var(--black);
+    background: #000000;
     border-radius: 0.5rem;
-    color: var(--white);
-    font-family: "JetBrainsMono", monospace;
+    color: #ffffff;
+    font-family: 'JetBrainsMono', monospace;
     margin: 1.5rem 0;
     padding: 0.75rem 1rem;
 
@@ -82,14 +81,67 @@
   }
 
   blockquote {
-    border-left: 3px solid var(--gray-3);
+    border-left: 3px solid #f0f0f0;
     margin: 1.5rem 0;
     padding-left: 1rem;
   }
 
   hr {
     border: none;
-    border-top: 1px solid var(--gray-2);
-    margin: 2rem 0;
+    border-top: 1px solid #e0e0e0;
+    margin: 10px 0;
+  }
+}
+
+/* Bubble menu */
+.bubble-menu {
+  background-color: #ffffff;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  box-shadow: #000000 0 0 10px;
+  display: flex;
+  padding: 5px;
+
+  button {
+    background-color: unset;
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+
+    &.is-active {
+      background-color: #ff0000;
+
+      &:hover {
+        background-color: #f0ff00;
+      }
+    }
+  }
+}
+
+/* Floating menu */
+.floating-menu {
+  display: flex;
+  background-color: #e0e0e0;
+  padding: 5px;
+  border-radius: 5px;
+
+  button {
+    background-color: unset;
+    padding: 5px 10px;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+
+    &.is-active {
+      background-color: #ffffff;
+      color: #00ffff;
+
+      &:hover {
+        color: #000fff;
+      }
+    }
   }
 }
