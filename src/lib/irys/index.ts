@@ -12,6 +12,9 @@ import {
   PLACEHOLDER_APPLICATION_ID,
 } from "./constants";
 import { ViemClient } from "@/utils/applicationTypes";
+import { resizeImage } from "@/utils/fileUtils";
+import fs from "fs/promises";
+import path from "path";
 
 export const getWebIrysInstance = async ({
   client,
@@ -38,47 +41,46 @@ export const getWebIrysInstance = async ({
   return webIrys;
 };
 
-const resizeImage = async (
-  originalBlob: Blob,
-  targetSizeKb = 100
-): Promise<Blob> => {
-  const MAX_SIZE = targetSizeKb * 1024; // Convert KiB to bytes
+async function handleFunding(webIrys: WebIrys, fileSize: number) {
+  if (fileSize >= 102400) {
+    const loadedBalance = webIrys.utils.fromAtomic(
+      await webIrys.getLoadedBalance()
+    );
+    const costToUpload = await webIrys.getPrice(fileSize);
+    console.log("Loaded balance:", loadedBalance.toString());
+    if (costToUpload.isGreaterThanOrEqualTo(loadedBalance)) {
+      try {
+        console.log("Funding node costToUpload:", costToUpload);
+        const fundTx = await webIrys.fund(costToUpload);
+        console.log("Funding successful ", fundTx);
+      } catch (e) {
+        console.log("Error funding:", e);
+      }
+    } else {
+      console.log("Balance sufficient !(Funding node)");
+    }
+  }
+}
 
-  // Create an image to read the dimensions of the original blob
-  const image = new Image();
-  const originalUrl = URL.createObjectURL(originalBlob);
-  image.src = originalUrl;
-  await new Promise((resolve) => {
-    image.onload = () => {
-      URL.revokeObjectURL(originalUrl);
-      resolve(null);
-    };
-  });
-
-  // Calculate new size while maintaining aspect ratio
-  const scaleFactor = Math.sqrt(MAX_SIZE / originalBlob.size);
-  const newWidth = image.width * scaleFactor;
-  const newHeight = image.height * scaleFactor;
-
-  // Create a canvas and use pica to resize the image
-  const canvas = document.createElement("canvas");
-  canvas.width = newWidth;
-  canvas.height = newHeight;
-
-  await pica().resize(image, canvas);
-
-  // Convert the resized image on the canvas to a blob
-  let resizedBlob = await pica().toBlob(canvas, "image/jpeg", 0.9); // Start with high quality
-
-  // Adjust quality if necessary
-  let quality = 0.9;
-  while (resizedBlob.size > MAX_SIZE && quality > 0.1) {
-    quality -= 0.05; // Decrease quality incrementally
-    resizedBlob = await pica().toBlob(canvas, "image/jpeg", quality);
+async function prepareAndUpload(
+  webIrys: WebIrys,
+  file: File,
+  contentType: string,
+  category?: string
+) {
+  const tags = [
+    { name: "Content-Type", value: contentType },
+    { name: "application-id", value: PLACEHOLDER_APPLICATION_ID },
+  ];
+  if (category) {
+    tags.push({ name: "category", value: category });
   }
 
-  return resizedBlob;
-};
+  const receipt = await webIrys.uploadFile(file, { tags });
+  console.log("Logging receipt", receipt);
+  console.log(`Data uploaded ==> ${IRYS_GATEWAY_DOWNLOAD_URL(receipt.id)}`);
+  return receipt;
+}
 
 export const uploadImage = async (
   originalBlob: Blob,
@@ -86,51 +88,47 @@ export const uploadImage = async (
   category?: string
 ) => {
   try {
-    // Initialize WebIrys
     const webIrys = await getWebIrysInstance({ client });
 
-    // Resize image to be less than 100 Kib
     const resizedBlob = await resizeImage(originalBlob);
 
-    // Convert Blob to File
     const imageFile = new File([resizedBlob], "photo.jpg", {
       type: "image/jpeg",
     });
     console.log("Image file size: ", imageFile.size);
 
-    // If imageFile.size < 100 Kib, it's free to upload, don't even check funding
-    if (imageFile.size >= 102400) {
-      // Fund
-      const loadedBalance = webIrys.utils.fromAtomic(
-        await webIrys.getLoadedBalance()
-      );
-      const costToUpload = await webIrys.getPrice(imageFile.size);
-      console.log("Loaded balance=", loadedBalance.toString());
-      if (costToUpload.isGreaterThanOrEqualTo(loadedBalance)) {
-        try {
-          console.log("Funding node costToUpload=", costToUpload);
-          const fundTx = await webIrys.fund(costToUpload);
-          console.log("Funding successful ", fundTx);
-        } catch (e) {
-          console.log("Error funding e=", e);
-        }
-      } else {
-        console.log("Balance sufficient !(Funding node)");
-      }
-    }
-    const tags = [
-      { name: "Content-Type", value: "image/jpeg" },
-      { name: "application-id", value: PLACEHOLDER_APPLICATION_ID },
-    ];
-    if (category) {
-      tags.push({ name: "category", value: category });
-    }
+    await handleFunding(webIrys, imageFile.size);
 
-    const receipt = await webIrys.uploadFile(imageFile, { tags });
-    console.log("Logging receipt", receipt);
-    console.log(`Data uploaded ==> ${IRYS_GATEWAY_DOWNLOAD_URL(receipt.id)}`);
+    return await prepareAndUpload(webIrys, imageFile, "image/jpeg", category);
   } catch (e) {
     console.error("Error uploading data", e);
+    throw e;
+  }
+};
+
+export const uploadFile = async (
+  filepath: string,
+  client: ViemClient,
+  category?: string
+) => {
+  try {
+    const webIrys = await getWebIrysInstance({ client });
+
+    const response = await fetch(filepath);
+    const blob = await response.blob();
+
+    const htmlFile = new File([blob], "document.html", {
+      type: "text/html",
+    });
+
+    console.log("HTML file size: ", htmlFile.size);
+
+    await handleFunding(webIrys, htmlFile.size);
+
+    return await prepareAndUpload(webIrys, htmlFile, "text/html", category);
+  } catch (e) {
+    console.error("Error uploading data", e);
+    throw e;
   }
 };
 
