@@ -166,7 +166,7 @@ const MenuBar = () => {
 };
 
 const extensions = [
-  TextStyle.configure({ types: [ListItem.name] }),
+  // TextStyle.configure({ types: [ListItem.name] }), // TODO : This is not working, awaiting a bit of help
   StarterKit.configure({
     bulletList: {
       keepMarks: true,
