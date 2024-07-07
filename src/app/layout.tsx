@@ -20,10 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={clsx("flex min-h-screen", inter.className)}>
+      <body className={inter.className}>
         <Providers>
-          <Nav />
-          <RootContainer>{children}</RootContainer>
+          <div className="flex min-h-screen">
+            <Nav />
+            <RootContainer>{children}</RootContainer>
+          </div>
         </Providers>
       </body>
     </html>
