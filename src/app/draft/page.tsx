@@ -4,8 +4,11 @@ import React from "react";
 type Props = {};
 
 const Page = (props: Props) => {
-    return <div>editor</div>
-//   return <Editor />;
+  return (
+    <div className="flex flex-col justify-center w-full">
+      <Editor />
+    </div>
+  );
 };
 
 export default Page;

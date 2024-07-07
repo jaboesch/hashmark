@@ -6,7 +6,7 @@ type Props = {
 };
 
 const RootContainer = ({ children }: Props) => {
-  return <div className="px-4">{children}</div>;
+  return <div className="py-24 md:px-10 w-full bg-gray-100">{children}</div>;
 };
 
 export default RootContainer;
