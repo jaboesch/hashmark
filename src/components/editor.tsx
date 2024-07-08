@@ -6,11 +6,14 @@ import Link from "@tiptap/extension-link";
 import StarterKit from "@tiptap/starter-kit";
 import React from "react";
 import EditorMenuBar from "./editorMenuBar";
-import EditorBubbleMenu from "./editorBubbleMenu";
+import { BlogPostHtmlAtom } from "@/lib/jotai/atoms";
+import { useAtom } from "jotai";
 import { SlashCommandLogging } from "@/lib/tiptap";
+import EditorBubbleMenu from "./editorBubbleMenu";
 
 const Editor = () => {
-
+  const [html, setHtml] = useAtom(BlogPostHtmlAtom);
+  console.log("HTML", html);
   const editor = useEditor({
     injectCSS: false,
     editorProps: {
@@ -28,6 +31,11 @@ const Editor = () => {
       Underline,
       SlashCommandLogging
     ],
+    onUpdate: ({ editor }) => {
+      const draftHtml = editor.getHTML();
+      console.log("Draft HTML", draftHtml);
+      setHtml(draftHtml);
+    },
     content: `
         <h1>Welcome to Our Editor</h1>
   <p>This is a simple paragraph to test the text styling similar to <strong>Notion</strong>. Here's a link to <a href="https://www.example.com">Example Website</a>.</p>
