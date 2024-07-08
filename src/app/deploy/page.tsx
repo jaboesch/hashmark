@@ -13,7 +13,7 @@ type Props = {};
 const Page = (props: Props) => {
   const { data, status } = useWalletClient();
   const [html] = useAtom(BlogPostHtmlAtom);
-  console.log("logging html", html);
+  // console.log("logging html", html);
   // const onUpload = async (imageSrc: string): Promise<void> => {
   //   if (data) {
   //     console.log("Uploading image");
