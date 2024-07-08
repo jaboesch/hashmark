@@ -26,8 +26,10 @@ p {
 
 /* Links */
 a {
-  color: #065f46;
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  color: #777;
+  cursor: pointer;
 }
 
 /* Heading 1 */
@@ -84,6 +86,7 @@ i {
 /* Underlined text */
 u {
   text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* Strikethrough text */
@@ -96,12 +99,20 @@ ul,
 ol {
   padding: 0 1rem;
   margin: 1.25rem 1rem 1.25rem 0.4rem;
-  list-style-type: disc;
+  
 
   li p {
     margin-top: 0.25em;
     margin-bottom: 0.25em;
   }
+}
+
+ul {
+  list-style-type: disc;
+}
+
+ol {
+  list-style-type: decimal;
 }
 
 /* Blockquote */

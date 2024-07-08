@@ -17,6 +17,7 @@ import {
   LuStrikethrough,
   LuText,
   LuTextQuote,
+  LuUnderline,
   LuUndo2,
 } from "react-icons/lu";
 
@@ -44,22 +45,13 @@ const EditorMenuBar = ({ editor }: Props) => {
         <LuItalic className="size-full" />
       </EditorButton>
       <EditorButton
-        onClick={() => editor.chain().focus().toggleStrike().run()}
-        isDisabled={!editor.can().chain().focus().toggleStrike().run()}
-        isActive={editor.isActive("strike")}
-        label="Strikethrough"
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
+        isDisabled={!editor.can().chain().focus().toggleUnderline().run()}
+        isActive={editor.isActive("underline")}
+        label="Underline"
       >
-        <LuStrikethrough className="size-full" />
+        <LuUnderline className="size-full" />
       </EditorButton>
-      <EditorButton
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        isDisabled={!editor.can().chain().focus().toggleCode().run()}
-        isActive={editor.isActive("code")}
-        label="Code"
-      >
-        <LuCode className="size-full" />
-      </EditorButton>
-
       <EditorButton
         onClick={() => editor.chain().focus().unsetAllMarks().run()}
         label="Clear Marks"

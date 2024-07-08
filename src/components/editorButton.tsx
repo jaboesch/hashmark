@@ -19,7 +19,7 @@ const EditorButton = ({
   return (
     <button
       className={clsx(
-        "hover:bg-gray-200 size-8 p-1.5 rounded",
+        "hover:bg-gray-200 size-8 p-1.5 rounded animate transition",
         isActive ? "text-blue-500" : "text-gray-500",
         isDisabled && "bg-gray-100 text-gray-300 pointer-events-none"
       )}

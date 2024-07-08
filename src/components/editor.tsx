@@ -1,16 +1,16 @@
 "use client";
 
-import {
-  BubbleMenu,
-  EditorContent,
-  FloatingMenu,
-  useEditor,
-} from "@tiptap/react";
+import { EditorContent, useEditor } from "@tiptap/react";
+import Underline from "@tiptap/extension-underline";
+import Link from "@tiptap/extension-link";
 import StarterKit from "@tiptap/starter-kit";
 import React from "react";
 import EditorMenuBar from "./editorMenuBar";
+import EditorBubbleMenu from "./editorBubbleMenu";
+import { SlashCommandLogging } from "@/lib/tiptap";
 
 const Editor = () => {
+
   const editor = useEditor({
     injectCSS: false,
     editorProps: {
@@ -18,7 +18,16 @@ const Editor = () => {
         class: "mx-auto focus:outline-none",
       },
     },
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit.configure({
+        heading: {
+          levels: [1, 2, 3],
+        },
+      }),
+      Link,
+      Underline,
+      SlashCommandLogging
+    ],
     content: `
         <h1>Welcome to Our Editor</h1>
   <p>This is a simple paragraph to test the text styling similar to <strong>Notion</strong>. Here's a link to <a href="https://www.example.com">Example Website</a>.</p>
@@ -59,67 +68,7 @@ function helloWorld() {
 
   return (
     <>
-      {editor && (
-        <BubbleMenu
-          className="bubble-menu"
-          tippyOptions={{ duration: 100 }}
-          editor={editor}
-        >
-          <button
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            className={editor.isActive("bold") ? "is-active" : ""}
-          >
-            Bold
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={editor.isActive("italic") ? "is-active" : ""}
-          >
-            Italic
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={editor.isActive("strike") ? "is-active" : ""}
-          >
-            Strike
-          </button>
-        </BubbleMenu>
-      )}
-
-      {editor && (
-        <FloatingMenu
-          className="floating-menu"
-          tippyOptions={{ duration: 100 }}
-          editor={editor}
-        >
-          <button
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 1 }).run()
-            }
-            className={
-              editor.isActive("heading", { level: 1 }) ? "is-active" : ""
-            }
-          >
-            H1
-          </button>
-          <button
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 2 }).run()
-            }
-            className={
-              editor.isActive("heading", { level: 2 }) ? "is-active" : ""
-            }
-          >
-            H2
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={editor.isActive("bulletList") ? "is-active" : ""}
-          >
-            Bullet list
-          </button>
-        </FloatingMenu>
-      )}
+      {editor && <EditorBubbleMenu editor={editor} />}
       <div className="flex flex-col gap-2 w-full">
         {editor && <EditorMenuBar editor={editor} />}
         <EditorContent
