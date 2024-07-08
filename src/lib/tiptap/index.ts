@@ -26,6 +26,7 @@ export const SlashCommands = Extension.create({
     return {
       suggestion: {
         char: "/",
+        startOfLine: true,
         command: ({
           editor,
           range,

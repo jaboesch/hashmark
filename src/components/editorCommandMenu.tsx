@@ -59,7 +59,7 @@ export const EditorCommandMenu = forwardRef(function EditorCommandMenu(
   }));
 
   return (
-    <div className="editor-container shadow-md flex min-w-[250px] flex-col gap-1 p-2 align-middle justify-center ">
+    <div className="editor-container shadow-md flex min-w-[250px] flex-col gap-1 p-3 align-middle justify-center ">
       {props.items.length ? (
         props.items.map((item, index) => (
           <EditorCommandButton
@@ -69,7 +69,12 @@ export const EditorCommandMenu = forwardRef(function EditorCommandMenu(
             label={item.title}
             key={`editor-command-button-${index}`}
           >
-            <item.icon className={clsx("size-8 mr-2 border rounded-md p-1")} />
+            <item.icon
+              className={clsx(
+                "size-8 mr-2 border rounded-md p-1 animate transition",
+                index === selectedIndex && "border-[#ccc]"
+              )}
+            />
           </EditorCommandButton>
         ))
       ) : (

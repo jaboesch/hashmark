@@ -1,6 +1,6 @@
 "use client";
 
-import { EditorContent, useEditor } from "@tiptap/react";
+import { EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
 import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 import StarterKit from "@tiptap/starter-kit";
@@ -42,6 +42,11 @@ const Editor = () => {
   return (
     <>
       {editor && <EditorBubbleMenu editor={editor} />}
+      {editor && (
+        <FloatingMenu editor={editor} className="text-[#aaa] font-light">
+          Type / for commands
+        </FloatingMenu>
+      )}
       <div className="flex flex-col gap-2 w-full">
         {editor && <EditorMenuBar editor={editor} />}
         <EditorContent
