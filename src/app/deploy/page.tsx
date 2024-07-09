@@ -13,16 +13,6 @@ type Props = {};
 const Page = (props: Props) => {
   const { data, status } = useWalletClient();
   const [html] = useAtom(BlogPostHtmlAtom);
-  // console.log("logging html", html);
-  // const onUpload = async (imageSrc: string): Promise<void> => {
-  //   if (data) {
-  //     console.log("Uploading image");
-  //     const blob = await getBlobFromImageUrl(imageSrc);
-  //     console.log("Blob", blob);
-  //     await uploadImage(blob, data, "test");
-  //     console.log("Image uploaded");
-  //   }
-  // };
 
   const onUpload = async (html: string | null): Promise<void> => {
     if (!html) {
@@ -45,13 +35,12 @@ const Page = (props: Props) => {
   return (
     <div>
       <h1>Page</h1>
-      <ConnectButton />;
       <button
         className="bg-black text-white rounded-2xl px-4 py-2 disabled:opacity-50"
         disabled={!data || status === "error"}
         onClick={() => onUpload(html)}
       >
-        Upload Image
+        Upload HTML
       </button>
     </div>
   );
