@@ -3,7 +3,6 @@ import React, { useCallback } from "react";
 import EditorButton from "./editorButton";
 import {
   LuBold,
-  LuCode,
   LuCode2,
   LuItalic,
   LuLink,
@@ -18,7 +17,7 @@ type Props = {
 const EditorBubbleMenu = ({ editor }: Props) => {
   const setLink = useCallback(() => {
     const previousUrl = editor.getAttributes("link").href;
-    const url = window.prompt("URL", previousUrl);
+    const url = window.prompt("Enter the URL here (ex. https://hashmark.xyz)", previousUrl);
 
     // cancelled
     if (url === null) {

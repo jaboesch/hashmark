@@ -10,7 +10,6 @@
   margin: auto;
   padding: 2rem;
   width: 100%;
-  min-height: 85vh;
 }
 
 .editor-container {
@@ -19,115 +18,116 @@
   border: 1px solid #f0f0f0;
 }
 
-/* Paragraph */
-p {
-  margin-bottom: 0.6em;
-}
-
-/* Links */
-a {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  color: #777;
-  cursor: pointer;
-}
-
-/* Heading 1 */
-h1 {
-  font-size: 1.875em;
-  font-weight: 600;
-  margin-bottom: 0.6em;
-}
-
-/* Heading 2 */
-h2 {
-  font-size: 1.5em;
-  font-weight: 600;
-  margin-bottom: 0.5em;
-}
-
-/* Heading 3 */
-h3 {
-  font-size: 1.25em;
-  font-weight: 600;
-  margin-bottom: 0.5em;
-}
-
-/* Code - Inline */
-code {
-  background-color: #e2e2e2;
-  padding: 2px 4px;
-  font-family: monospace;
-  border-radius: 3px;
-}
-
-/* Code - Block */
-pre code {
-  display: block;
-  padding: 0.5em;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  background-color: #e2e2e2;
-  border-left: 3px solid #bbb;
-}
-
-/* Bold text */
-strong,
-b {
-  font-weight: bold;
-}
-
-/* Italic text */
-em,
-i {
-  font-style: italic;
-}
-
-/* Underlined text */
-u {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-/* Strikethrough text */
-s {
-  text-decoration: line-through;
-}
-
-/* Bullet list */
-ul,
-ol {
-  padding: 0 1rem;
-  margin: 1.25rem 1rem 1.25rem 0.4rem;
-  
-
-  li p {
-    margin-top: 0.25em;
-    margin-bottom: 0.25em;
+.tiptap {
+  /* Paragraph */
+  p {
+    margin-bottom: 0.6em;
   }
-}
 
-ul {
-  list-style-type: disc;
-}
+  /* Links */
+  a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    color: #777;
+    cursor: pointer;
+  }
 
-ol {
-  list-style-type: decimal;
-}
+  /* Heading 1 */
+  h1 {
+    font-size: 1.875em;
+    font-weight: 600;
+    margin-bottom: 0.6em;
+  }
 
-/* Blockquote */
-blockquote {
-  border-left: 3px solid #bbb;
-  margin: 1.5rem 0;
-  padding-left: 1rem;
-}
+  /* Heading 2 */
+  h2 {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 0.5em;
+  }
 
-/* Horizontal rule */
-hr {
-  border: none;
-  height: 1px;
-  background-color: #ccc;
-  margin: 2em 0;
+  /* Heading 3 */
+  h3 {
+    font-size: 1.25em;
+    font-weight: 600;
+    margin-bottom: 0.5em;
+  }
+
+  /* Code - Inline */
+  code {
+    background-color: #e2e2e2;
+    padding: 2px 4px;
+    font-family: monospace;
+    border-radius: 3px;
+  }
+
+  /* Code - Block */
+  pre code {
+    display: block;
+    padding: 0.5em;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    background-color: #e2e2e2;
+    border-left: 3px solid #bbb;
+  }
+
+  /* Bold text */
+  strong,
+  b {
+    font-weight: bold;
+  }
+
+  /* Italic text */
+  em,
+  i {
+    font-style: italic;
+  }
+
+  /* Underlined text */
+  u {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* Strikethrough text */
+  s {
+    text-decoration: line-through;
+  }
+
+  /* Bullet list */
+  ul,
+  ol {
+    padding: 0 1rem;
+    margin: 1.25rem 1rem 1.25rem 0.4rem;
+
+    li p {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  /* Blockquote */
+  blockquote {
+    border-left: 3px solid #bbb;
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+  }
+
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background-color: #ccc;
+    margin: 2em 0;
+  }
 }
 
 /* Media query for mobile devices */
@@ -135,31 +135,32 @@ hr {
   .editor-body {
     padding: 1rem;
   }
+  .tiptap {
+    p,
+    h1,
+    h2,
+    h3 {
+      margin-bottom: 0.5em;
+    }
 
-  p,
-  h1,
-  h2,
-  h3 {
-    margin-bottom: 0.5em;
-  }
+    h1 {
+      font-size: 1.5em;
+    }
 
-  h1 {
-    font-size: 1.5em;
-  }
+    h2 {
+      font-size: 1.3em;
+    }
 
-  h2 {
-    font-size: 1.3em;
-  }
+    h3 {
+      font-size: 1.1em;
+    }
 
-  h3 {
-    font-size: 1.1em;
-  }
+    p {
+      font-size: 0.9em;
+    }
 
-  p {
-    font-size: 0.9em;
-  }
-
-  blockquote {
-    padding-left: 0.5rem;
+    blockquote {
+      padding-left: 0.5rem;
+    }
   }
 }

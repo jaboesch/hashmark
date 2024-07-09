@@ -19,7 +19,7 @@ const Editor = () => {
     injectCSS: false,
     editorProps: {
       attributes: {
-        class: "mx-auto focus:outline-none",
+        class: "mx-auto focus:outline-none min-h-[500px]",
       },
     },
     extensions: [
