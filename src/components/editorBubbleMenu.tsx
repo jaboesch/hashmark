@@ -17,7 +17,10 @@ type Props = {
 const EditorBubbleMenu = ({ editor }: Props) => {
   const setLink = useCallback(() => {
     const previousUrl = editor.getAttributes("link").href;
-    const url = window.prompt("Enter the URL here (ex. https://hashmark.xyz)", previousUrl);
+    const url = window.prompt(
+      "Enter the URL here (ex. https://hashmark.xyz)",
+      previousUrl
+    );
 
     // cancelled
     if (url === null) {
@@ -27,12 +30,20 @@ const EditorBubbleMenu = ({ editor }: Props) => {
     // empty
     if (url === "") {
       editor.chain().focus().extendMarkRange("link").unsetLink().run();
-
       return;
     }
 
     // update link
-    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+    if (editor.isActive("image")) {
+      editor.chain().focus().setImage({ src: url }).run();
+    } else {
+      editor
+        .chain()
+        .focus()
+        .extendMarkRange("link")
+        .setLink({ href: url })
+        .run();
+    }
   }, [editor]);
 
   return (

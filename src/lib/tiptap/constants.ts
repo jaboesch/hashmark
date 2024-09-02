@@ -1,4 +1,15 @@
 export const DEFAULT_STYLES = `
+  /* Body */
+  body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    width: 100%;
+    color: #333;
+  }
+
   /* Paragraph */
   p {
     margin-bottom: 0.6em;
@@ -107,6 +118,20 @@ export const DEFAULT_STYLES = `
     height: 1px;
     background-color: #ccc;
     margin: 2em 0;
+  }
+
+  /* Images */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Table */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1rem;
+    gap: 10px;
   }
 `
 
@@ -298,17 +323,7 @@ export const SAMPLE_CONTENT = `
         Visit Ensemble
     </a>
 </div>
-<div style="text-align: center; margin: 20px 0;">
-    <a href="https://twitter.com/yourprofile" style="margin-right: 10px;">
-        <img src="https://via.placeholder.com/32x32?text=Twitter" alt="Twitter" style="width: 32px; height: 32px;">
-    </a>
-    <a href="https://instagram.com/yourprofile" style="margin-right: 10px;">
-        <img src="https://via.placeholder.com/32x32?text=Instagram" alt="Instagram" style="width: 32px; height: 32px;">
-    </a>
-    <a href="https://linkedin.com/in/yourprofile" style="margin-right: 10px;">
-        <img src="https://via.placeholder.com/32x32?text=LinkedIn" alt="LinkedIn" style="width: 32px; height: 32px;">
-    </a>
-</div>
+
         </div>
 
         <!-- Footer Section -->
