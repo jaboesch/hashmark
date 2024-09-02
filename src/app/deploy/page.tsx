@@ -2,7 +2,12 @@
 
 import { uploadFile, uploadImage } from "@/lib/irys";
 import { BlogPostHtmlAtom } from "@/lib/jotai/atoms";
-import { createHtmlFile, getBlobFromImageUrl } from "@/utils/fileUtils";
+import { DEFAULT_STYLES } from "@/lib/tiptap/constants";
+import {
+  createHtmlFile,
+  createHtmlString,
+  getBlobFromImageUrl,
+} from "@/utils/fileUtils";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAtom } from "jotai";
 import React from "react";
@@ -26,7 +31,8 @@ const Page = (props: Props) => {
     }
 
     console.log("logging file to upload", html);
-    const htmlFilepath = await createHtmlFile(html);
+    const styledHtml = createHtmlString({ body: html, styles: DEFAULT_STYLES });
+    const htmlFilepath = await createHtmlFile(styledHtml);
     console.log("logging filepath", htmlFilepath);
     await uploadFile(htmlFilepath, data, "test");
     console.log("File uploaded");
