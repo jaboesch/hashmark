@@ -19,6 +19,8 @@ import {
   LuTextQuote,
   LuUnderline,
   LuUndo2,
+  LuImage,
+  LuTable,
 } from "react-icons/lu";
 
 type Props = {
@@ -26,6 +28,13 @@ type Props = {
 };
 
 const EditorMenuBar = ({ editor }: Props) => {
+  const addImage = () => {
+    const url = window.prompt("Enter the URL for the image:");
+    if (url) {
+      editor.chain().focus().setImage({ src: url }).run();
+    }
+  };
+
   return (
     <div className="editor-container w-full max-w-[800px] mx-auto flex flex-row flex-wrap gap-1 p-2 align-middle justify-between ">
       <EditorButton
@@ -126,6 +135,19 @@ const EditorMenuBar = ({ editor }: Props) => {
         label="Horizontal Rule"
       >
         <MdHorizontalRule className="size-full" />
+      </EditorButton>
+
+      <EditorButton
+        onClick={() =>
+          editor.chain().focus().insertTable({ rows: 1, cols: 2 }).run()
+        }
+        label="Table"
+      >
+        <LuTable className="size-full" />
+      </EditorButton>
+
+      <EditorButton onClick={addImage} label="Image">
+        <LuImage className="size-full" />
       </EditorButton>
 
       <EditorButton

@@ -1,10 +1,21 @@
 "use client";
 
-import { EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
+import {
+  EditorContent,
+  FloatingMenu,
+  generateJSON,
+  useEditor,
+} from "@tiptap/react";
 import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
+import Image from "@tiptap/extension-image";
 import StarterKit from "@tiptap/starter-kit";
-import React from "react";
+import Gapcursor from "@tiptap/extension-gapcursor";
+import Table from "@tiptap/extension-table";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
+import React, { useEffect } from "react";
 import EditorMenuBar from "./editorMenuBar";
 import { BlogPostHtmlAtom } from "@/lib/jotai/atoms";
 import { useAtom } from "jotai";
@@ -30,6 +41,12 @@ const Editor = () => {
       }),
       Link,
       Underline,
+      Image,
+      Gapcursor,
+      Table,
+      TableCell,
+      TableHeader,
+      TableRow,
       SlashCommands.configure(slashCommandsConfig),
     ],
     onUpdate: ({ editor }) => {
