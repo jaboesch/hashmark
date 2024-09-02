@@ -126,12 +126,26 @@ export const DEFAULT_STYLES = `
     height: auto;
   }
 
-  /* Table */
+  /* Table Styles */
   table {
-    border-collapse: collapse;
     width: 100%;
     margin-bottom: 1rem;
-    gap: 10px;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  td {
+    border: 1px solid transparent;
+    border-right: 10px solid white; /* Create a gap between columns */
+    border-bottom: 10px solid white; /* Create a gap between rows */
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
+  }
+
+  td:last-child {
+    border-right: 0;
   }
 `
 
@@ -288,7 +302,6 @@ export const SAMPLE_CONTENT = `
         <td>
             <img src="https://via.placeholder.com/290x200?text=Image+1" alt="Image 1" style="width: 100%; display: block;">
         </td>
-<td><div style="width: 10px;"/></td>
         <td>
             <img src="https://via.placeholder.com/290x200?text=Image+2" alt="Image 2" style="width: 100%; display: block;">
         </td>

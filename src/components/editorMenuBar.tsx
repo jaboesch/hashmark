@@ -2,6 +2,7 @@ import { Editor } from "@tiptap/react";
 import React from "react";
 import EditorButton from "./editorButton";
 import { MdHorizontalRule } from "react-icons/md";
+import { BsImage, BsImages } from "react-icons/bs";
 import {
   LuBold,
   LuCode,
@@ -19,8 +20,6 @@ import {
   LuTextQuote,
   LuUnderline,
   LuUndo2,
-  LuImage,
-  LuTable,
 } from "react-icons/lu";
 
 type Props = {
@@ -33,6 +32,68 @@ const EditorMenuBar = ({ editor }: Props) => {
     if (url) {
       editor.chain().focus().setImage({ src: url }).run();
     }
+  };
+
+  const addTable = () => {
+    editor
+      .chain()
+      .focus()
+      .insertContent({
+        type: "table",
+        content: [
+          {
+            type: "tableRow",
+            content: [
+              {
+                type: "tableCell",
+                content: [
+                  {
+                    type: "image",
+                    attrs: {
+                      src: "https://i.imgur.com/Qa2Q3eY.png",
+                      alt: "Placeholder Image",
+                    },
+                  },
+                  {
+                    type: "paragraph",
+                    content: [
+                      {
+                        type: "text",
+                        text: "Caption #1",
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                type: "tableCell",
+                content: [
+                  {
+                    type: "image",
+                    attrs: {
+                      src: "https://i.imgur.com/Qa2Q3eY.png",
+                      alt: "Placeholder Image",
+                    },
+                  },
+                  {
+                    type: "paragraph",
+                    attrs: {
+                      class: "caption",
+                    },
+                    content: [
+                      {
+                        type: "text",
+                        text: "Caption #2",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      })
+      .run();
   };
 
   return (
@@ -130,24 +191,19 @@ const EditorMenuBar = ({ editor }: Props) => {
         <LuTextQuote className="size-full" />
       </EditorButton>
 
+      <EditorButton onClick={addImage} label="Image">
+        <BsImage className="size-full" />
+      </EditorButton>
+
+      <EditorButton onClick={addTable} label="Table">
+        <BsImages className="size-full" />
+      </EditorButton>
+
       <EditorButton
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
         label="Horizontal Rule"
       >
         <MdHorizontalRule className="size-full" />
-      </EditorButton>
-
-      <EditorButton
-        onClick={() =>
-          editor.chain().focus().insertTable({ rows: 1, cols: 2 }).run()
-        }
-        label="Table"
-      >
-        <LuTable className="size-full" />
-      </EditorButton>
-
-      <EditorButton onClick={addImage} label="Image">
-        <LuImage className="size-full" />
       </EditorButton>
 
       <EditorButton
