@@ -1,6 +1,6 @@
 "use client";
 
-import { uploadFile, uploadImage } from "@/lib/irys";
+import { getAllBlogPosts, uploadFile, uploadImage } from "@/lib/irys";
 import { BlogPostHtmlAtom } from "@/lib/jotai/atoms";
 import { DEFAULT_STYLES } from "@/lib/tiptap/constants";
 import {
@@ -11,13 +11,19 @@ import {
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAtom } from "jotai";
 import React from "react";
-import { UseWalletClientReturnType, useWalletClient } from "wagmi";
+import { useWalletClient } from "wagmi";
 
 type Props = {};
 
 const Page = (props: Props) => {
   const { data, status } = useWalletClient();
   const [html] = useAtom(BlogPostHtmlAtom);
+
+  const manualFetch = async (walletAddress?: string) => {
+    if (!walletAddress) return;
+    const res = await getAllBlogPosts(walletAddress);
+    console.log("logging res", res);
+  };
 
   const onUpload = async (html: string | null): Promise<void> => {
     if (!html) {
@@ -39,7 +45,7 @@ const Page = (props: Props) => {
   };
 
   return (
-    <div>
+    <div className="h-screen w-screen bg-red-500">
       <h1>Page</h1>
       <button
         className="bg-black text-white rounded-2xl px-4 py-2 disabled:opacity-50"
@@ -47,6 +53,13 @@ const Page = (props: Props) => {
         onClick={() => onUpload(html)}
       >
         Upload HTML
+      </button>
+      <button
+        className="bg-black text-white rounded-2xl px-4 py-2 disabled:opacity-50"
+        disabled={!data || status === "error"}
+        onClick={() => manualFetch(data?.account.address)}
+      >
+        Run Query
       </button>
     </div>
   );

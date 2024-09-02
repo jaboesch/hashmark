@@ -1,5 +1,4 @@
 import { WebIrys } from "@irys/sdk";
-import pica from "pica";
 import Query from "@irys/query";
 import { IrysItem, IrysPaymentToken } from "./types";
 import {
@@ -13,8 +12,8 @@ import {
 } from "./constants";
 import { ViemClient } from "@/utils/applicationTypes";
 import { resizeImage } from "@/utils/fileUtils";
-import fs from "fs/promises";
-import path from "path";
+
+const irysQuery = new Query({ url: IRYS_GRAPHQL_URL(IRYS_NETWORKS.MAINNET) });
 
 export const getWebIrysInstance = async ({
   client,
@@ -133,14 +132,13 @@ export const uploadFile = async (
 };
 
 export const getAllImages = async (): Promise<IrysItem[]> => {
-  const myQuery = new Query({ url: IRYS_GRAPHQL_URL(IRYS_NETWORKS.MAINNET) });
   const TAGS_TO_FILTER = [
     { name: "application-id", values: [PLACEHOLDER_APPLICATION_ID] },
     { name: "Content-Type", values: ["image/jpeg"] },
   ];
 
   try {
-    const results = await myQuery
+    const results = await irysQuery
       .search("irys:transactions")
       .fields({
         id: true,
@@ -152,6 +150,28 @@ export const getAllImages = async (): Promise<IrysItem[]> => {
         },
       })
       .tags(TAGS_TO_FILTER)
+      .sort("DESC");
+
+    return results ? (results as IrysItem[]) : [];
+  } catch (error) {
+    console.error("Failed to fetch images:", error);
+    return [];
+  }
+};
+
+export const getAllBlogPosts = async (
+  walletAddress: string
+): Promise<IrysItem[]> => {
+  const TAGS_TO_FILTER = [
+    // { name: "application-id", values: [PLACEHOLDER_APPLICATION_ID] },
+    { name: "Content-Type", values: ["text/html"] },
+  ];
+
+  try {
+    const results = await irysQuery
+      .search("irys:transactions")
+      .tags(TAGS_TO_FILTER)
+      .from([walletAddress])
       .sort("DESC");
 
     return results ? (results as IrysItem[]) : [];
