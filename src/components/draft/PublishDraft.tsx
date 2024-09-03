@@ -10,20 +10,15 @@ import {
 } from "@/utils/fileUtils";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAtom } from "jotai";
+import { Send } from "lucide-react";
 import React from "react";
 import { useWalletClient } from "wagmi";
+import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
 
-type Props = {};
-
-const Page = (props: Props) => {
-  const { data, status } = useWalletClient();
+export function PublishDraftButton({ className }: { className?: string }) {
+  const { data } = useWalletClient();
   const [html] = useAtom(BlogPostHtmlAtom);
-
-  const manualFetch = async (walletAddress?: `0x${string}`) => {
-    if (!walletAddress) return;
-    const res = await getAllBlogPostsForAddress(walletAddress);
-    console.log("logging res", res);
-  };
 
   const onUpload = async (html: string | null): Promise<void> => {
     if (!html) {
@@ -41,28 +36,21 @@ const Page = (props: Props) => {
     const htmlFilepath = await createHtmlFile(styledHtml);
     console.log("logging filepath", htmlFilepath);
     await uploadFile(htmlFilepath, data, "test");
+    alert("Success! Your post was published successfully.");
     console.log("File uploaded");
   };
 
   return (
-    <div className="h-screen w-screen bg-red-500">
-      <h1>Page</h1>
-      <button
-        className="bg-black text-white rounded-2xl px-4 py-2 disabled:opacity-50"
-        disabled={!data || status === "error"}
-        onClick={() => onUpload(html)}
-      >
-        Upload HTML
-      </button>
-      <button
-        className="bg-black text-white rounded-2xl px-4 py-2 disabled:opacity-50"
-        disabled={!data || status === "error"}
-        onClick={() => manualFetch(data?.account.address)}
-      >
-        Run Query
-      </button>
-    </div>
+    <Button
+      size="sm"
+      className={cn("h-8 gap-1 w-36", className)}
+      disabled={!data?.account.address || !html}
+      onClick={() => onUpload(html)}
+    >
+      <Send className="h-3.5 w-3.5" />
+      <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+        Publish Draft
+      </span>
+    </Button>
   );
-};
-
-export default Page;
+}
