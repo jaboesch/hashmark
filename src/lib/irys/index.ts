@@ -1,6 +1,6 @@
 import { WebIrys } from "@irys/sdk";
 import Query from "@irys/query";
-import { IrysItem, IrysPaymentToken } from "./types";
+import { IrysBlogPostQueryResponse, IrysItem, IrysPaymentToken } from "./types";
 import {
   IRYS_DEFAULT_NODE_URL,
   IRYS_GATEWAY_DOWNLOAD_URL,
@@ -10,7 +10,7 @@ import {
   IRYS_PROVIDER_TYPES,
   PLACEHOLDER_APPLICATION_ID,
 } from "./constants";
-import { ViemClient } from "@/utils/applicationTypes";
+import { BlogPost, ViemClient } from "@/utils/applicationTypes";
 import { resizeImage } from "@/utils/fileUtils";
 
 const irysQuery = new Query({ url: IRYS_GRAPHQL_URL(IRYS_NETWORKS.MAINNET) });
@@ -159,9 +159,9 @@ export const getAllImages = async (): Promise<IrysItem[]> => {
   }
 };
 
-export const getAllBlogPosts = async (
-  walletAddress: string
-): Promise<IrysItem[]> => {
+export const getAllBlogPostsForAddress = async (
+  walletAddress: `0x${string}`
+): Promise<BlogPost[]> => {
   const TAGS_TO_FILTER = [
     // { name: "application-id", values: [PLACEHOLDER_APPLICATION_ID] },
     { name: "Content-Type", values: ["text/html"] },
@@ -174,7 +174,26 @@ export const getAllBlogPosts = async (
       .from([walletAddress])
       .sort("DESC");
 
-    return results ? (results as IrysItem[]) : [];
+    const rawData = results ? (results as IrysBlogPostQueryResponse[]) : [];
+
+    const formattedPosts = rawData.map((post) => {
+      const { address, id, timestamp } = post;
+      const createdAt = new Date(timestamp);
+      const resourceUrl = IRYS_GATEWAY_DOWNLOAD_URL(id);
+
+      const blogPost: BlogPost = {
+        user: address as `0x${string}`,
+        title: id,
+        status: "Published",
+        author: address,
+        createdAt,
+        resourceUrl,
+      };
+
+      return blogPost;
+    });
+
+    return formattedPosts;
   } catch (error) {
     console.error("Failed to fetch images:", error);
     return [];

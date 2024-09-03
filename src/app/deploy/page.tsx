@@ -1,6 +1,6 @@
 "use client";
 
-import { getAllBlogPosts, uploadFile, uploadImage } from "@/lib/irys";
+import { getAllBlogPostsForAddress, uploadFile, uploadImage } from "@/lib/irys";
 import { BlogPostHtmlAtom } from "@/lib/jotai/atoms";
 import { DEFAULT_STYLES } from "@/lib/tiptap/constants";
 import {
@@ -19,9 +19,9 @@ const Page = (props: Props) => {
   const { data, status } = useWalletClient();
   const [html] = useAtom(BlogPostHtmlAtom);
 
-  const manualFetch = async (walletAddress?: string) => {
+  const manualFetch = async (walletAddress?: `0x${string}`) => {
     if (!walletAddress) return;
-    const res = await getAllBlogPosts(walletAddress);
+    const res = await getAllBlogPostsForAddress(walletAddress);
     console.log("logging res", res);
   };
 

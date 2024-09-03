@@ -19,3 +19,12 @@ export type ViemClient<
     Account
   >
 >;
+
+export interface BlogPost {
+  user: `0x${string}`;
+  title: string;
+  status: "Published" | "Draft";
+  author: string;
+  createdAt: Date;
+  resourceUrl: string;
+}
