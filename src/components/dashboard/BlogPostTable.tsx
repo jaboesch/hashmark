@@ -30,6 +30,15 @@ const BlogPostTableRow: React.FC<BlogPost> = ({
   createdAt,
   resourceUrl,
 }) => {
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(resourceUrl);
+      console.log("URL copied to clipboard");
+    } catch (err) {
+      console.error("Failed to copy URL: ", err);
+    }
+  };
+
   return (
     <TableRow>
       <TableCell className="font-medium max-w-24 truncate text-ellipsis overflow-hidden text-nowrap">
@@ -57,7 +66,12 @@ const BlogPostTableRow: React.FC<BlogPost> = ({
       <TableCell>
         <Tooltip>
           <TooltipTrigger>
-            <Clipboard size={18} />
+            <button
+              onClick={copyToClipboard}
+              className="active:scale-90 transition duration-150 ease-out"
+            >
+              <Clipboard size={18} />
+            </button>
           </TooltipTrigger>
           <TooltipContent>
             <p>Copy URL</p>
