@@ -26,7 +26,9 @@ export const createHtmlString = ({
         </style>
       </head>
       <body>
-        ${body}
+        <div class="content">
+          ${body}
+        </div>
       </body>
     </html>
   `;

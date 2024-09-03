@@ -1,5 +1,19 @@
 export const DEFAULT_STYLES = `
-  --primary: #111;
+  :root {
+      --primary: #111; /* Set the primary color variable */
+    }
+
+   /* Body */
+  .content {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    box-sizing: border-box;
+    width: 100%;
+    color: #333;
+  }
 
   /* Paragraph */
   p {
@@ -185,6 +199,40 @@ export const DEFAULT_STYLES = `
     margin-top: 20px;
     margin-bottom: 5px;
   }
+
+  @media (max-width: 768px) {
+    .content {
+      padding: 1rem;
+    }
+  
+    p,
+    h1,
+    h2,
+    h3 {
+      margin-bottom: 0.5em;
+    }
+
+    h1 {
+      font-size: 1.5em;
+    }
+
+    h2 {
+      font-size: 1.3em;
+    }
+
+    h3 {
+      font-size: 1.1em;
+    }
+
+    p {
+      font-size: 0.9em;
+    }
+
+    blockquote {
+      padding-left: 0.5rem;
+    }
+  }
+
 `;
 
 export const PLACEHOLDER_IMAGE_ROW = {
