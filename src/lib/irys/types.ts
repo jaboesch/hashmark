@@ -21,3 +21,17 @@ export interface IrysItem {
   address: string;
   timestamp: number;
 }
+
+export interface IrysReceipt {
+  deadlineHeight: number;
+  signature: string;
+  timestamp: number;
+  version: string;
+}
+
+export interface IrysBlogPostQueryResponse extends IrysItem {
+  receipt: IrysReceipt;
+  signature: string;
+  tags: { name: string; value: string }[];
+  token: IrysPaymentToken;
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { uploadFile, uploadImage } from "@/lib/irys";
+import { getAllBlogPostsForAddress, uploadFile, uploadImage } from "@/lib/irys";
 import { BlogPostHtmlAtom } from "@/lib/jotai/atoms";
 import { DEFAULT_STYLES } from "@/lib/tiptap/constants";
 import {
@@ -10,13 +10,14 @@ import {
 } from "@/utils/fileUtils";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAtom } from "jotai";
+import { Send } from "lucide-react";
 import React from "react";
-import { UseWalletClientReturnType, useWalletClient } from "wagmi";
+import { useWalletClient } from "wagmi";
+import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
 
-type Props = {};
-
-const Page = (props: Props) => {
-  const { data, status } = useWalletClient();
+export function PublishDraftButton({ className }: { className?: string }) {
+  const { data } = useWalletClient();
   const [html] = useAtom(BlogPostHtmlAtom);
 
   const onUpload = async (html: string | null): Promise<void> => {
@@ -35,21 +36,21 @@ const Page = (props: Props) => {
     const htmlFilepath = await createHtmlFile(styledHtml);
     console.log("logging filepath", htmlFilepath);
     await uploadFile(htmlFilepath, data, "test");
+    alert("Success! Your post was published successfully.");
     console.log("File uploaded");
   };
 
   return (
-    <div>
-      <h1>Page</h1>
-      <button
-        className="bg-black text-white rounded-2xl px-4 py-2 disabled:opacity-50"
-        disabled={!data || status === "error"}
-        onClick={() => onUpload(html)}
-      >
-        Upload HTML
-      </button>
-    </div>
+    <Button
+      size="sm"
+      className={cn("h-8 gap-1 w-36", className)}
+      disabled={!data?.account.address || !html}
+      onClick={() => onUpload(html)}
+    >
+      <Send className="h-3.5 w-3.5" />
+      <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+        Publish Draft
+      </span>
+    </Button>
   );
-};
-
-export default Page;
+}

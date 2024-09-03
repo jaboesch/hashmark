@@ -10,6 +10,7 @@ import {
   WALLETCONNECT_PROJECT_ID,
 } from "@/utils/applicationConstants";
 import { Provider } from "jotai";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +26,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
-          <Provider>{children}</Provider>
+          <TooltipProvider>
+            <Provider>{children}</Provider>
+          </TooltipProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
