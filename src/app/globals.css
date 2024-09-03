@@ -19,16 +19,32 @@
 }
 
 .tiptap {
+  --primary: #111;
+
   /* Paragraph */
   p {
     margin-bottom: 0.6em;
   }
 
   /* Links */
-  a {
+  .default-link {
     text-decoration: underline;
     text-underline-offset: 2px;
     color: #777;
+    cursor: pointer;
+  }
+
+  .button-link {
+    background-color: var(--primary);
+    color: #ffffff;
+    padding: 10px 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: fit-content;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
     cursor: pointer;
   }
 
@@ -116,9 +132,17 @@
 
   /* Blockquote */
   blockquote {
-    border-left: 3px solid #bbb;
-    margin: 1.5rem 0;
-    padding-left: 1rem;
+    font-family: "Monaco", monospace;
+    font-size: 16px;
+    color: #666666;
+    background-color: #f9f9f9;
+    border-left: 4px solid #bbb;
+    margin: 20px 0;
+    padding: 10px;
+
+    * {
+      margin: 0;
+    }
   }
 
   /* Horizontal rule */
@@ -132,11 +156,10 @@
   img {
     max-width: 100%;
     width: 100%;
-    height: auto;
-  }
-
-  .caption {
-    color: #555;
+    max-height: 500px;
+    object-fit: contain;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   table {
@@ -158,6 +181,29 @@
 
   td:last-child {
     border-right: 0;
+  }
+
+  .caption {
+    display: inline-block;
+    color: #777;
+    font-weight: lighter;
+    text-align: center;
+    width: 100%;
+  }
+
+  .tag {
+    display: block;
+    color: #333;
+    width: min-content;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 1px solid #333;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 15px;
+    margin-top: 20px;
+    margin-bottom: 5px;
   }
 }
 

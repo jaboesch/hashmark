@@ -18,7 +18,7 @@ const EditorBubbleMenu = ({ editor }: Props) => {
   const setLink = useCallback(() => {
     const previousUrl = editor.getAttributes("link").href;
     const url = window.prompt(
-      "Enter the URL here (ex. https://imgur.com/a/J4d859z)",
+      "Enter the URL here:",
       previousUrl
     );
 

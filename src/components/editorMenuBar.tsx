@@ -5,7 +5,6 @@ import { MdHorizontalRule } from "react-icons/md";
 import { BsImage, BsImages } from "react-icons/bs";
 import {
   LuBold,
-  LuCode,
   LuCode2,
   LuHeading1,
   LuHeading2,
@@ -15,12 +14,12 @@ import {
   LuListOrdered,
   LuRedo2,
   LuRemoveFormatting,
-  LuStrikethrough,
   LuText,
   LuTextQuote,
   LuUnderline,
   LuUndo2,
 } from "react-icons/lu";
+import { PLACEHOLDER_IMAGE_ROW } from "@/lib/tiptap/constants";
 
 type Props = {
   editor: Editor;
@@ -32,68 +31,6 @@ const EditorMenuBar = ({ editor }: Props) => {
     if (url) {
       editor.chain().focus().setImage({ src: url }).run();
     }
-  };
-
-  const addTable = () => {
-    editor
-      .chain()
-      .focus()
-      .insertContent({
-        type: "table",
-        content: [
-          {
-            type: "tableRow",
-            content: [
-              {
-                type: "tableCell",
-                content: [
-                  {
-                    type: "image",
-                    attrs: {
-                      src: "https://i.imgur.com/Qa2Q3eY.png",
-                      alt: "Placeholder Image",
-                    },
-                  },
-                  {
-                    type: "paragraph",
-                    content: [
-                      {
-                        type: "text",
-                        text: "Caption #1",
-                      },
-                    ],
-                  },
-                ],
-              },
-              {
-                type: "tableCell",
-                content: [
-                  {
-                    type: "image",
-                    attrs: {
-                      src: "https://i.imgur.com/Qa2Q3eY.png",
-                      alt: "Placeholder Image",
-                    },
-                  },
-                  {
-                    type: "paragraph",
-                    attrs: {
-                      class: "caption",
-                    },
-                    content: [
-                      {
-                        type: "text",
-                        text: "Caption #2",
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      })
-      .run();
   };
 
   return (
@@ -195,7 +132,12 @@ const EditorMenuBar = ({ editor }: Props) => {
         <BsImage className="size-full" />
       </EditorButton>
 
-      <EditorButton onClick={addTable} label="Table">
+      <EditorButton
+        onClick={() =>
+          editor.chain().focus().insertContent(PLACEHOLDER_IMAGE_ROW).run()
+        }
+        label="Image Row"
+      >
         <BsImages className="size-full" />
       </EditorButton>
 

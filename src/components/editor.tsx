@@ -19,7 +19,7 @@ import React, { useEffect } from "react";
 import EditorMenuBar from "./editorMenuBar";
 import { BlogPostHtmlAtom } from "@/lib/jotai/atoms";
 import { useAtom } from "jotai";
-import { SlashCommands, slashCommandsConfig } from "@/lib/tiptap";
+import { CustomLink, CustomSpan, SlashCommands, slashCommandsConfig } from "@/lib/tiptap";
 import EditorBubbleMenu from "./editorBubbleMenu";
 import { SAMPLE_CONTENT } from "@/lib/tiptap/constants";
 
@@ -39,10 +39,11 @@ const Editor = () => {
           levels: [1, 2, 3],
         },
       }),
-      Link,
+      CustomLink,
       Underline,
       Image,
       Gapcursor,
+      CustomSpan,
       Table,
       TableCell,
       TableHeader,

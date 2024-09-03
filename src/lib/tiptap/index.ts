@@ -1,4 +1,4 @@
-import { Extension } from "@tiptap/core";
+import { Extension, Node } from "@tiptap/core";
 import { Editor, Range } from "@tiptap/react";
 import { Suggestion } from "@tiptap/suggestion";
 import { ReactRenderer } from "@tiptap/react";
@@ -12,12 +12,17 @@ import {
   LuListOrdered,
   LuTextQuote,
   LuCode2,
+  LuRectangleHorizontal,
 } from "react-icons/lu";
+import { TbTextCaption } from "react-icons/tb";
 import { SuggestionKeyDownProps, SuggestionProps } from "@tiptap/suggestion";
 import { RefAttributes } from "react";
 import { CommandFtnProps, CommandItem } from "@/lib/tiptap/types";
 import { EditorCommandMenu } from "@/components/editorCommandMenu";
 import { MdHorizontalRule } from "react-icons/md";
+import { PLACEHOLDER_IMAGE_ROW } from "./constants";
+import { BsImage, BsImages } from "react-icons/bs";
+import Link from "@tiptap/extension-link";
 
 export const SlashCommands = Extension.create({
   name: "slashCommands",
@@ -125,6 +130,51 @@ const slashCommandItems: CommandItem[] = [
     },
   },
   {
+    title: "Tag",
+    icon: LuRectangleHorizontal,
+    command: ({ editor, range }: CommandFtnProps) => {
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .setNode("customSpan", {
+          class: "tag",
+        })
+        .run();
+    },
+  },
+  {
+    title: "Image",
+    icon: BsImage,
+    command: ({ editor, range }: CommandFtnProps) => {
+      const url = window.prompt("Enter the URL for the image:");
+      if (url) {
+        editor.chain().focus().setImage({ src: url }).run();
+      }
+    },
+  },
+  {
+    title: "Image Row",
+    icon: BsImages,
+    command: ({ editor, range }: CommandFtnProps) => {
+      editor.chain().focus().insertContent(PLACEHOLDER_IMAGE_ROW).run();
+    },
+  },
+  {
+    title: "Caption",
+    icon: TbTextCaption,
+    command: ({ editor, range }: CommandFtnProps) => {
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .setNode("customSpan", {
+          class: "caption",
+        })
+        .run();
+    },
+  },
+  {
     title: "Divider",
     icon: MdHorizontalRule,
     command: ({ editor, range }: CommandFtnProps) => {
@@ -142,8 +192,7 @@ export const slashCommandsConfig = {
       const filteredItems: CommandItem[] = slashCommandItems
         .filter((item) =>
           item.title.toLowerCase().startsWith(query.toLowerCase())
-        )
-        .slice(0, 10);
+        );
       return filteredItems;
     },
     /**
@@ -206,3 +255,59 @@ export const slashCommandsConfig = {
     },
   },
 };
+
+export const CustomLink = Link.extend({
+  addAttributes() {
+    return {
+      class: {
+        parseHTML: (element) => element.getAttribute("class"),
+        default: "default-link",
+      },
+      style: {
+        parseHTML: (element) => element.getAttribute("style"),
+        default: null,
+      },
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: "a",
+      },
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["a", HTMLAttributes, 0];
+  },
+});
+
+export const CustomSpan = Node.create({
+  name: "customSpan",
+  group: "block",
+  content: "inline*",
+
+  addAttributes() {
+    return {
+      class: {
+        parseHTML: (element) => element.getAttribute("class"),
+        default: null,
+      },
+      style: {
+        parseHTML: (element) => element.getAttribute("style"),
+        default: null,
+      },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: "span",
+      },
+    ];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ["span", HTMLAttributes, 0];
+  },
+});
