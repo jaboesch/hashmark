@@ -259,6 +259,7 @@ export const slashCommandsConfig = {
 export const CustomLink = Link.extend({
   addAttributes() {
     return {
+      ...this.parent?.(),
       class: {
         parseHTML: (element) => element.getAttribute("class"),
         default: "default-link",
@@ -272,7 +273,7 @@ export const CustomLink = Link.extend({
   parseHTML() {
     return [
       {
-        tag: "a",
+        tag: "a[href]",
       },
     ];
   },

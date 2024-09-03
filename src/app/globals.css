@@ -75,6 +75,9 @@
     padding: 2px 4px;
     font-family: monospace;
     border-radius: 3px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   /* Code - Block */
@@ -194,10 +197,7 @@
   .tag {
     display: block;
     color: #333;
-    width: min-content;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    width: fit-content;
     border: 1px solid #333;
     padding: 4px 8px;
     border-radius: 4px;

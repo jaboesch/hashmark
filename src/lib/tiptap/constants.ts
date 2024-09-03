@@ -69,6 +69,9 @@ export const DEFAULT_STYLES = `
     padding: 2px 4px;
     font-family: monospace;
     border-radius: 3px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   /* Code - Block */
@@ -188,10 +191,7 @@ export const DEFAULT_STYLES = `
   .tag {
     display: block;
     color: #333;
-    width: min-content;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    width: fit-content;
     border: 1px solid #333;
     padding: 4px 8px;
     border-radius: 4px;
@@ -295,59 +295,12 @@ export const PLACEHOLDER_IMAGE_ROW = {
 };
 
 export const SAMPLE_CONTENT = `
-  <h1>Welcome to Our Editor</h1>
-  <p>This is a simple paragraph to test the text styling similar to <strong>Notion</strong>. Here's a link to <a href="https://www.example.com">Example Website</a>.</p>
-  
-  <h2>Subheading Level 2</h2>
-  <p>Additional text under a subheading. This text includes <em>italic</em>, <strong>bold</strong>, and <u>underline</u> styles.</p>
-  
-  <h3>Subheading Level 3</h3>
-  <p>Even more text under a smaller subheading. Here's some <s>strikethrough</s> text.</p>
-
-  <h3>Images</h3>
-  <span class="tag">Single Image</span>
-  <img src="https://i.imgur.com/Qa2Q3eY.png" alt="Image 1" >
-  <span class="caption">Images can optionally include captions.</span>
-
-  <span class="tag">Image Row</span>
-  <table >
-      <tr>
-          <td>
-              <img src="https://i.imgur.com/Qa2Q3eY.png" alt="Image 1" >
-          </td>
-          <td>
-              <img src="https://i.imgur.com/Qa2Q3eY.png" alt="Image 2" >
-          </td>
-      </tr>
-  </table>
-
-  <p>Inline <code>code</code> snippet.</p>
-  <pre><code>// This is a block of code
+  <body>
+        <div class="content">
+          <h1>Welcome to HashMark!</h1><h2>Overview</h2><p><a href="https://www.hashmark.xyz" target="_blank" rel="noopener noreferrer nofollow" class="default-link">HashMark</a> is a decentralized blogging tool designed to simplify the writing and publishing process. It is intentionally designed with<strong> no business model</strong>, completely free of advertisements, subscriptions, and paywalls. Posts on HashMark are stored on the decentralized service Arweave and signed by the author's Ethereum wallet for authenticity.&nbsp;</p><h2>Usage</h2><p>HashMark offers a fully functional rich text editor with support for a variety of components. The editor can be used in a variety of ways, such as:</p><ol><li><p><strong>The Control Bar </strong>is&nbsp;located on the top of the editor. Use the icons to style your text, add new components to the page, and utilize undo/redo functions.</p></li><li><p><strong>The Bubble Menu</strong>&nbsp;is shown when you highlight text. This provides quick way to style the selected text.</p></li><li><p><strong>The Slash Menu</strong>&nbsp;can be activated by typing a forward slash&nbsp;<code>/</code>&nbsp;on a new line. You can scroll through the options or type and use arrow keys to make a selection.</p></li><li><p><strong>Keyboard and Markdown Shortcuts</strong>&nbsp;such as <code>CMD+C</code>&nbsp;for copy and <code># Heading 1</code>&nbsp;can be used throughout the editor. This should feel familiar for users who have experience with other popular text editors.</p></li></ol><h2>Examples</h2><h3>Paragraph and Headings</h3><p>Have you noticed? Paragraph, H1, H2, and H3 components have already been used in this document!</p><h3>Lists</h3><p><strong>Bullet List:</strong></p><ul><li><p>First Bullet</p></li><li><p>Second Bullet</p></li><li><p>Third Bullet</p></li></ul><p><strong>Numbered List:</strong></p><ol><li><p>First Item</p></li><li><p>Second Item</p></li><li><p>Third Item</p></li></ol><h3>Code Block</h3><pre><code>// This is a block of code
 function helloWorld() {
   console.log("Hello, world!");
-}</code></pre>
-
-  <ul>
-    <li>Bullet list item 1</li>
-    <li>Bullet list item 2</li>
-    <li>Bullet list item 3</li>
-  </ul>
-
-  <hr>
-
-  <blockquote>This is a blockquote. It's a great way to highlight important information.</blockquote>
-
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nec feugiat in fermentum posuere urna nec tincidunt. Massa tempor nec feugiat nisl pretium fusce. Risus viverra adipiscing at in tellus integer feugiat scelerisque varius. Commodo viverra maecenas accumsan lacus vel facilisis. Egestas pretium aenean pharetra magna ac placerat vestibulum lectus mauris. Penatibus et magnis dis parturient. Integer vitae justo eget magna fermentum iaculis eu. Sed cras ornare arcu dui vivamus. Justo donec enim diam vulputate ut. Urna neque viverra justo nec ultrices dui sapien eget. Donec ac odio tempor orci dapibus ultrices in iaculis. Integer malesuada nunc vel risus commodo viverra maecenas. Ultricies mi eget mauris pharetra et ultrices neque ornare. Iaculis eu non diam phasellus vestibulum lorem. Nec ullamcorper sit amet risus. A condimentum vitae sapien pellentesque habitant morbi. Cum sociis natoque penatibus et magnis dis.</p>
-
-  <p>Mi quis hendrerit dolor magna. Pharetra et ultrices neque ornare aenean euismod. Arcu bibendum at varius vel pharetra. Lectus proin nibh nisl condimentum id venenatis a condimentum vitae. Sociis natoque penatibus et magnis dis parturient montes. Sit amet facilisis magna etiam tempor. Dignissim sodales ut eu sem integer vitae justo eget. Aliquam nulla facilisi cras fermentum. Dignissim suspendisse in est ante in nibh. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus vel. Nulla aliquet porttitor lacus luctus accumsan. Suspendisse potenti nullam ac tortor vitae purus. Tincidunt tortor aliquam nulla facilisi cras. Arcu dictum varius duis at consectetur lorem. Urna nec tincidunt praesent semper feugiat nibh sed pulvinar. Id donec ultrices tincidunt arcu. Enim facilisis gravida neque convallis a. Tempor orci eu lobortis elementum nibh tellus molestie nunc non. Auctor eu augue ut lectus.</p>
-
-  <p>Et ultrices neque ornare aenean euismod elementum nisi. Aliquet sagittis id consectetur purus ut faucibus pulvinar elementum integer. Elit duis tristique sollicitudin nibh sit. Bibendum est ultricies integer quis auctor. Egestas egestas fringilla phasellus faucibus scelerisque eleifend. Ultricies leo integer malesuada nunc vel risus commodo viverra. Vestibulum mattis ullamcorper velit sed. Pharetra et ultrices neque ornare aenean euismod elementum nisi quis. Gravida cum sociis natoque penatibus et magnis dis parturient. Id venenatis a condimentum vitae sapien pellentesque habitant. Lectus sit amet est placerat in egestas erat imperdiet. Eu volutpat odio facilisis mauris sit amet massa. Sed arcu non odio euismod. Quis hendrerit dolor magna eget.</p>
-
-  <p>Commodo ullamcorper a lacus vestibulum sed arcu non odio. Libero volutpat sed cras ornare arcu dui vivamus. Amet volutpat consequat mauris nunc congue nisi vitae. Dui id ornare arcu odio ut. Blandit cursus risus at ultrices. Enim praesent elementum facilisis leo vel fringilla est. Donec massa sapien faucibus et molestie ac feugiat sed. Enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra. Pellentesque nec nam aliquam sem. At auctor urna nunc id cursus metus aliquam. Dolor magna eget est lorem. Leo in vitae turpis massa sed elementum. Ut venenatis tellus in metus vulputate eu. Vehicula ipsum a arcu cursus vitae congue mauris rhoncus aenean. Suscipit adipiscing bibendum est ultricies integer.</p>
-
-  <p>Auctor augue mauris augue neque gravida in. Magna fringilla urna porttitor rhoncus dolor purus non enim praesent. Enim nec dui nunc mattis enim ut tellus elementum. Nulla facilisi cras fermentum odio. Libero volutpat sed cras ornare arcu dui. At imperdiet dui accumsan sit amet nulla facilisi morbi. Nunc sed id semper risus in hendrerit gravida rutrum quisque. Ullamcorper velit sed ullamcorper morbi tincidunt ornare. Purus in massa tempor nec feugiat nisl pretium. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Feugiat in fermentum posuere urna nec tincidunt praesent. Enim ut sem viverra aliquet eget sit amet tellus. Interdum posuere lorem ipsum dolor sit. Sed nisi lacus sed viverra tellus.</p>
-
-  <a href="https://www.hashmark.xyz" class="button-link">
-        Action Button
-    </a>
+}</code></pre><p></p><h3>Blockquote</h3><blockquote><p>This is a blockquote which may be used to include neat quotations from any number of sources.</p></blockquote><h3>Tags</h3><span class="tag">This is a tag!</span><p></p><h3>Image</h3><img src="https://i.imgur.com/Qa2Q3eY.png" alt="Image 1"><span class="caption">The URL of an image may be replaced via the link icon in the bubble menu.</span><p></p><h3>Image Row</h3><table style="min-width: 50px"><colgroup><col><col></colgroup><tbody><tr><td colspan="1" rowspan="1"><img src="https://i.imgur.com/Qa2Q3eY.png" alt="Placeholder Image"><span class="caption">Caption #1</span></td><td colspan="1" rowspan="1"><img src="https://i.imgur.com/Qa2Q3eY.png" alt="Placeholder Image"><span class="caption">Caption #2</span></td></tr></tbody></table><h3>Divider</h3><hr><h3>Text Styles</h3><ul><li><p>Text can be<strong> bold</strong></p></li><li><p>Or it can be<em> italic</em></p></li><li><p>Potentially it could be <u>underlined</u></p></li><li><p>Maybe even <s>crossed out</s></p></li><li><p>Technical users may appreciate <code>inline code</code></p></li><li><p>You can even link to your <a href="https://www.hashmark.xyz" target="_blank" rel="noopener noreferrer nofollow" class="default-link">favorite website</a></p></li><li><p>Text styles can be <strong><em><u>stacked</u></em></strong> to <a href="https://www.hashmark.xyz" target="_blank" rel="noopener noreferrer nofollow" class="default-link"><strong><em><s><u>ridiculous levels</u></s></em></strong></a></p></li></ul><span class="tag">Styles can also be <strong>applied</strong> within other <em>components!</em></span><hr><h1>Helpful Tips</h1><span class="tag">Uploading Images</span><p>HashMark is not currently supporting image uploads, so you will need to upload your images to another service and include the URL in HashMark.</p><p><a href="https://postimages.org/" target="_blank" rel="noopener noreferrer nofollow" class="default-link">PostImages</a> offers a free, stable image upload service. Follow the link, upload your image, and copy the<strong> Direct Link</strong>. Make sure to get the direct link or the image will not load properly - it should end in a file extension.</p><p>Example:&nbsp;&nbsp;<code>https://i.postimg.cc/yYTJycCF/placeholder.png</code>&nbsp;</p><p></p><p><a href="https://www.hashmark.xyz" target="_blank" rel="noopener noreferrer nofollow" class="button-link">Action Button</a></p><span class="caption">Thanks for using HashMark!</span>
+        </div>
+      </body>
       `;
