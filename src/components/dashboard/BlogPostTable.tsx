@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Clipboard } from "lucide-react";
+import { Clipboard, Wallet2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -101,7 +101,12 @@ export const BlogPostTable: React.FC = () => {
   }
 
   if (!walletAddress) {
-    return <div>Please connect your wallet to view blog posts.</div>;
+    return (
+      <div className="mx-auto w-full text-center flex justify-center items-center space-x-2">
+        <Wallet2 />
+        <p>Please connect your wallet above to get started!</p>
+      </div>
+    );
   }
 
   if (queryStatus === "error") {
