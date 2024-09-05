@@ -48,7 +48,7 @@ const EditorBubbleMenu = ({ editor }: Props) => {
 
   return (
     <BubbleMenu
-      className="flex flex-row p-1 gap-1 editor-container border shadow-sm rounded-md"
+      className="flex flex-row p-1 gap-1 bg-white border shadow-sm rounded-md"
       tippyOptions={{ duration: 100 }}
       editor={editor}
     >

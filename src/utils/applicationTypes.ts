@@ -28,3 +28,12 @@ export interface BlogPost {
   createdAt: Date;
   resourceUrl: string;
 }
+
+export type BlogPostMetadata = {
+  title: string; // under 60 characters (50-60), include primary keyword, use as H1
+  description: string; // under 160 characters
+  keywords: string; // 3-5 keywords comma and space separated (word1, phrase 2, word3)
+  canonicalUrl: string; // full url, default to hashmark
+  coverImageUrl: string; // full url
+  authorName: string; // full name
+};

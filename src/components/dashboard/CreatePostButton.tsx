@@ -14,7 +14,7 @@ export function CreatePostButton() {
 
   return (
     <Link href={ROUTE_DRAFT_URL} aria-disabled={!isWalletConnected}>
-      <Button size="sm" className="h-8 gap-1" disabled={!isWalletConnected}>
+      <Button size="lg" className="gap-1" disabled={!isWalletConnected}>
         <PlusCircle className="h-3.5 w-3.5" />
         <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
           Create New Post

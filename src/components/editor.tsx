@@ -52,7 +52,6 @@ const Editor = () => {
       CustomLink,
       Underline,
       Image,
-      Gapcursor,
       CustomSpan,
       Table,
       TableCell,
@@ -68,20 +67,18 @@ const Editor = () => {
   });
 
   return (
-    <>
+    <div className="flex flex-col gap-2 w-full">
       {editor && <EditorBubbleMenu editor={editor} />}
       {editor && (
-        <FloatingMenu editor={editor} className="text-[#aaa] font-light">
+        <FloatingMenu editor={editor} className="text-[#aaa] font-light bg-white">
           Type / for commands
         </FloatingMenu>
       )}
       <style>{theme}</style>
       <style>{DEFAULT_STYLES}</style>
-      <div className="flex flex-col gap-2 w-full">
-        {editor && <EditorMenuBar editor={editor} />}
-        <EditorContent editor={editor} className="hashmark-content" />
-      </div>
-    </>
+      {editor && <EditorMenuBar editor={editor} />}
+      <EditorContent editor={editor} className="hashmark-content" />
+    </div>
   );
 };
 

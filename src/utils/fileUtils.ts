@@ -94,9 +94,9 @@ export const createHtmlString = ({
         </style>
       </head>
       <body class="hashmark-container">
-        <div class="hashmark-content">
+        <main class="hashmark-content">
           ${body}
-        </div>
+        </main>
       </body>
     </html>
   `;
