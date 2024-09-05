@@ -34,7 +34,7 @@ const EditorMenuBar = ({ editor }: Props) => {
   };
 
   return (
-    <div className="bg-white w-full max-w-[800px] mx-auto flex flex-row flex-wrap gap-1 p-2 align-middle justify-between ">
+    <div className="bg-white rounded-sm shadow-sm w-full max-w-[800px] mx-auto flex flex-row flex-wrap gap-1 p-2 align-middle justify-between ">
       <EditorButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         isDisabled={!editor.can().chain().focus().toggleBold().run()}

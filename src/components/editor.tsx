@@ -1,24 +1,15 @@
 "use client";
 
-import {
-  EditorContent,
-  FloatingMenu,
-  generateJSON,
-  useEditor,
-} from "@tiptap/react";
+import { EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
 import Underline from "@tiptap/extension-underline";
-import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import StarterKit from "@tiptap/starter-kit";
-import Gapcursor from "@tiptap/extension-gapcursor";
 import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import EditorMenuBar from "./editorMenuBar";
-import { BlogPostHtmlAtom } from "@/lib/jotai/atoms";
-import { useAtom } from "jotai";
 import {
   CustomLink,
   CustomSpan,
@@ -26,16 +17,14 @@ import {
   slashCommandsConfig,
 } from "@/lib/tiptap";
 import EditorBubbleMenu from "./editorBubbleMenu";
-import {
-  DEFAULT_STYLES,
-  DEFAULT_THEME,
-  SAMPLE_CONTENT,
-} from "@/lib/tiptap/constants";
 
-const Editor = () => {
-  const [html, setHtml] = useAtom(BlogPostHtmlAtom);
-  const [theme, setTheme] = useState(DEFAULT_THEME);
-
+const Editor = ({
+  initialHtml,
+  updateHtml,
+}: {
+  initialHtml: string;
+  updateHtml: (html: string) => void;
+}) => {
   const editor = useEditor({
     injectCSS: false,
     editorProps: {
@@ -61,23 +50,24 @@ const Editor = () => {
     ],
     onUpdate: ({ editor }) => {
       const draftHtml = editor.getHTML();
-      setHtml(draftHtml);
+      updateHtml(draftHtml);
     },
-    content: SAMPLE_CONTENT,
+    content: initialHtml,
   });
 
   return (
     <div className="flex flex-col gap-2 w-full">
       {editor && <EditorBubbleMenu editor={editor} />}
       {editor && (
-        <FloatingMenu editor={editor} className="text-[#aaa] font-light bg-white">
+        <FloatingMenu
+          editor={editor}
+          className="text-[#aaa] font-light bg-white"
+        >
           Type / for commands
         </FloatingMenu>
       )}
-      <style>{theme}</style>
-      <style>{DEFAULT_STYLES}</style>
       {editor && <EditorMenuBar editor={editor} />}
-      <EditorContent editor={editor} className="hashmark-content" />
+      <EditorContent editor={editor} className="hashmark-content shadow-sm rounded-sm" />
     </div>
   );
 };

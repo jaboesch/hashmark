@@ -59,7 +59,7 @@ export const EditorCommandMenu = forwardRef(function EditorCommandMenu(
   }));
 
   return (
-    <div className="bg-white max-h-[400px] overflow-auto shadow-md flex min-w-[250px] flex-col gap-1 p-3 align-middle ">
+    <div className="bg-white rounded-sm max-h-[400px] overflow-auto shadow-md flex min-w-[250px] flex-col gap-1 p-3 align-middle ">
       {props.items.length ? (
         props.items.map((item, index) => (
           <EditorCommandButton
