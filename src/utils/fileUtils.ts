@@ -1,10 +1,72 @@
 import pica from "pica";
+import { getCurrentIsoDate } from "./dateUtils";
 
 export async function getBlobFromImageUrl(imageSrc: string) {
   const blob = await fetch(imageSrc).then((r) => r.blob());
 
   return blob;
 }
+
+export const createSeoMetadataString = ({
+  title,
+  description,
+  keywords,
+  canonicalUrl,
+  coverImageUrl,
+  authorName,
+}: {
+  // regex everything, only letters numbers dashes and maybe ampersands and apostrophes and commas and punctuation
+  title: string; // under 60 characters (50-60), include primary keyword, use as H1
+  description: string; // under 160 characters
+  keywords: string; // 3-5 keywords comma and space separated (word1, phrase 2, word3)
+  canonicalUrl: string; // full url, default to hashmark
+  coverImageUrl: string; // full url
+  authorName: string; // full name
+}) => {
+  const currentDate = getCurrentIsoDate();
+  return `
+    <!-- SEO Meta Tags -->
+    <title>${title}</title>
+    <meta name="description" content="${description}">
+    <meta name="keywords" content="${keywords}">
+    <meta name="author" content="${authorName}">
+    <meta name="datePublished" content="${currentDate}">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Canonical Tag -->
+    <link rel="canonical" href="${canonicalUrl}">
+    
+    <!-- OpenGraph Metadata for Social Sharing -->
+    <meta property="og:title" content="${title}">
+    <meta property="og:description" content="${description}">
+    <meta property="og:image" content="${coverImageUrl}">
+    <meta property="og:url" content="${canonicalUrl}">
+    <meta property="og:type" content="article">
+    
+    <!-- Twitter Card Metadata -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${title}">
+    <meta name="twitter:description" content="${description}">
+    <meta name="twitter:image" content="${coverImageUrl}">
+
+    <!-- Schema.org Metadata (BlogPosting) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "${title}",
+        "description": "${description}",
+        "image": "${coverImageUrl}",
+        "author": {
+            "@type": "Person",
+            "name": "${authorName}"
+        },
+        "datePublished": "${currentDate}",
+        "dateModified": "${currentDate}"
+    }
+    </script>
+`;
+};
 
 export const createHtmlString = ({
   body,
