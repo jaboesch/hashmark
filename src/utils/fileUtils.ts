@@ -1,5 +1,3 @@
-import fs from "fs/promises";
-import path from "path";
 import pica from "pica";
 
 export async function getBlobFromImageUrl(imageSrc: string) {
@@ -11,9 +9,13 @@ export async function getBlobFromImageUrl(imageSrc: string) {
 export const createHtmlString = ({
   body,
   styles,
+  theme,
+  seoMetadataString,
 }: {
   body: string;
   styles: string;
+  theme: string;
+  seoMetadataString: string;
 }) => {
   return `
     <!DOCTYPE html>
@@ -21,12 +23,16 @@ export const createHtmlString = ({
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        ${seoMetadataString}
+        <style>
+          ${theme}
+        </style>
         <style>
           ${styles}
         </style>
       </head>
-      <body>
-        <div class="content">
+      <body class="hashmark-container">
+        <div class="hashmark-content">
           ${body}
         </div>
       </body>

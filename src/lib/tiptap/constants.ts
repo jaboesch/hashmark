@@ -1,238 +1,242 @@
-export const DEFAULT_STYLES = `
-  :root {
-      --primary: #111; /* Set the primary color variable */
-    }
+export const DEFAULT_THEME = `
+:root {
+    --primaryFonts: Verdana, Geneva, Tahoma, sans-serif;
+    --quoteFonts: Monaco, monospace;
+    --containerBgColor: #ffffff;
+    --contentBgColor: #ffffff;
+    --contentBorderColor: #ffffff00;
+    --accentBgColor: #333;
+    --accentTextColor: #ffffff;
+    --primaryTextColor: #333;
+    --linkTextColor: #555;
+    --quoteBgColor: #eee;
+    --quoteTextColor: #333;
+    --codeBgColor: #eee;
+    --codeTextColor: #333;
+    --captionTextColor: #777;
+  }
+`;
 
-   /* Body */
-  .content {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+export const DEFAULT_STYLES = `
+  .hashmark-container {
+    width: 100%;
+    background-color: var(--containerBgColor);
+  }
+
+  .hashmark-content {
+    font-family: var(--primaryFonts);
     line-height: 1.6;
     max-width: 800px;
     margin: auto;
     padding: 2rem;
     box-sizing: border-box;
     width: 100%;
-    color: #333;
-  }
+    background-color: var(--contentBgColor);
+    color: var(--primaryTextColor);
+    border: 1px solid var(--contentBorderColor);
 
-  /* Paragraph */
-  p {
-    margin-bottom: 0.6em;
-  }
-
-  /* Links */
-  .default-link {
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    color: #777;
-    cursor: pointer;
-  }
-
-  .button-link {
-    background-color: var(--primary);
-    color: #ffffff;
-    padding: 10px 20px;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    width: fit-content;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    cursor: pointer;
-  }
-
-  /* Heading 1 */
-  h1 {
-    font-size: 1.875em;
-    font-weight: 600;
-    margin-bottom: 0.6em;
-  }
-
-  /* Heading 2 */
-  h2 {
-    font-size: 1.5em;
-    font-weight: 600;
-    margin-bottom: 0.5em;
-  }
-
-  /* Heading 3 */
-  h3 {
-    font-size: 1.25em;
-    font-weight: 600;
-    margin-bottom: 0.5em;
-  }
-
-  /* Code - Inline */
-  code {
-    background-color: #e2e2e2;
-    padding: 2px 4px;
-    font-family: monospace;
-    border-radius: 3px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-
-  /* Code - Block */
-  pre code {
-    display: block;
-    padding: 0.5em;
-    overflow-x: auto;
-    white-space: pre-wrap;
-    background-color: #e2e2e2;
-    border-left: 3px solid #bbb;
-  }
-
-  /* Bold text */
-  strong,
-  b {
-    font-weight: bold;
-  }
-
-  /* Italic text */
-  em,
-  i {
-    font-style: italic;
-  }
-
-  /* Underlined text */
-  u {
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-
-  /* Strikethrough text */
-  s {
-    text-decoration: line-through;
-  }
-
-  /* Bullet list */
-  ul,
-  ol {
-    padding: 0 1rem;
-    margin: 1.25rem 1rem 1.25rem 0.4rem;
-
-    li p {
-      margin-top: 0.25em;
-      margin-bottom: 0.25em;
+    p {
+      margin-bottom: 0.6em;
     }
-  }
 
-  ul {
-    list-style-type: disc;
-  }
-
-  ol {
-    list-style-type: decimal;
-  }
-
-  /* Blockquote */
-  blockquote {
-    font-family: "Monaco", monospace;
-    font-size: 16px;
-    color: #666666;
-    background-color: #f9f9f9;
-    border-left: 4px solid #bbb;
-    margin: 20px 0;
-    padding: 10px;
-
-    * {
-      margin: 0;
+    .default-link {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      color: var(--linkTextColor);
+      cursor: pointer;
     }
-  }
 
-  /* Horizontal rule */
-  hr {
-    border: none;
-    height: 1px;
-    background-color: #ccc;
-    margin: 2em 0;
-  }
-
-  img {
-    max-width: 100%;
-    width: 100%;
-    max-height: 500px;
-    object-fit: contain;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  table {
-    width: 100%;
-    margin-bottom: 1rem;
-    table-layout: fixed;
-    border-collapse: collapse;
-  }
-
-  td {
-    border: 1px solid transparent;
-    border-right: 10px solid white; /* Create a gap between columns */
-    border-bottom: 10px solid white; /* Create a gap between rows */
-  }
-
-  tr:last-child td {
-    border-bottom: 0;
-  }
-
-  td:last-child {
-    border-right: 0;
-  }
-
-  .caption {
-    display: inline-block;
-    color: #777;
-    font-weight: lighter;
-    text-align: center;
-    width: 100%;
-  }
-
-  .tag {
-    display: block;
-    color: #333;
-    width: fit-content;
-    border: 1px solid #333;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 15px;
-    margin-top: 20px;
-    margin-bottom: 5px;
-  }
-
-  @media (max-width: 768px) {
-    .content {
-      padding: 1rem;
-    }
-  
-    p,
-    h1,
-    h2,
-    h3 {
-      margin-bottom: 0.5em;
+    .button-link {
+      background-color: var(--accentBgColor);
+      color: var(--accentTextColor);
+      padding: 10px 20px;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      width: fit-content;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
     }
 
     h1 {
-      font-size: 1.5em;
+      font-size: 1.875em;
+      font-weight: 600;
+      margin-bottom: 0.6em;
     }
 
     h2 {
-      font-size: 1.3em;
+      font-size: 1.5em;
+      font-weight: 600;
+      margin-bottom: 0.5em;
     }
 
     h3 {
-      font-size: 1.1em;
+      font-size: 1.25em;
+      font-weight: 600;
+      margin-bottom: 0.5em;
     }
 
-    p {
-      font-size: 0.9em;
+    code {
+      background-color: var(--codeBgColor);
+      color: var(--codeTextColor);
+      padding: 2px 4px;
+      font-family: monospace;
+      border-radius: 3px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    pre code {
+      display: block;
+      padding: 0.5em;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      background-color: var(--codeBgColor);
+      color: var(--codeTextColor);
+      border-left: 3px solid var(--accentBgColor);
+    }
+
+    strong,
+    b {
+      font-weight: bold;
+    }
+
+    em,
+    i {
+      font-style: italic;
+    }
+
+    u {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    s {
+      text-decoration: line-through;
+    }
+
+    ul,
+    ol {
+      padding: 0 1rem;
+      margin: 1.25rem 1rem 1.25rem 0.4rem;
+
+      li p {
+        margin-top: 0.25em;
+        margin-bottom: 0.25em;
+      }
+    }
+
+    ul {
+      list-style-type: disc;
+    }
+
+    ol {
+      list-style-type: decimal;
     }
 
     blockquote {
-      padding-left: 0.5rem;
+      font-family: var(--quoteFonts);
+      font-size: 16px;
+      color: var(--quoteTextColor);
+      background-color: var(--quoteBgColor);
+      border-left: 4px solid var(--accentBgColor);
+      margin: 20px 0;
+      padding: 10px;
+
+      * {
+        margin: 0;
+      }
+    }
+
+    hr {
+      border: none;
+      height: 1px;
+      background-color: var(--accentBgColor);
+      margin: 2em 0;
+    }
+
+    img {
+      max-width: 100%;
+      width: 100%;
+      max-height: 500px;
+      object-fit: contain;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    table {
+      width: 100%;
+      margin-bottom: 1rem;
+      table-layout: fixed;
+      border-collapse: collapse;
+    }
+
+    td {
+      border: 1px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    td:last-child {
+      border-right: 0;
+    }
+
+    .caption {
+      display: inline-block;
+      color: var(--captionTextColor);
+      font-weight: lighter;
+      text-align: center;
+      width: 100%;
+    }
+
+    .tag {
+      display: block;
+      background-color: var(--accentBgColor);
+      color: var(--accentTextColor);
+      width: fit-content;
+      border: 1px solid var(--accentTextColor);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 15px;
+      margin-top: 20px;
+      margin-bottom: 5px;
     }
   }
 
+  @media (max-width: 768px) {
+    .hashmark-content {
+      padding: 1rem;
+      
+      p,
+      h1,
+      h2,
+      h3 {
+        margin-bottom: 0.5em;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      h2 {
+        font-size: 1.3em;
+      }
+      h3 {
+        font-size: 1.1em;
+      }
+      p {
+        font-size: 0.9em;
+      }
+      blockquote {
+        padding-left: 0.5rem;
+      }
+    }
+  }
 `;
 
 export const PLACEHOLDER_IMAGE_ROW = {

@@ -2,7 +2,7 @@
 
 import { getAllBlogPostsForAddress, uploadFile, uploadImage } from "@/lib/irys";
 import { BlogPostHtmlAtom } from "@/lib/jotai/atoms";
-import { DEFAULT_STYLES } from "@/lib/tiptap/constants";
+import { DEFAULT_STYLES, DEFAULT_THEME } from "@/lib/tiptap/constants";
 import {
   createHtmlFile,
   createHtmlString,
@@ -32,7 +32,12 @@ export function PublishDraftButton({ className }: { className?: string }) {
     }
 
     console.log("logging file to upload", html);
-    const styledHtml = createHtmlString({ body: html, styles: DEFAULT_STYLES });
+    const styledHtml = createHtmlString({
+      body: html,
+      styles: DEFAULT_STYLES,
+      theme: DEFAULT_THEME,
+      seoMetadataString: "",
+    });
     const htmlFilepath = await createHtmlFile(styledHtml);
     console.log("logging filepath", htmlFilepath);
     await uploadFile(htmlFilepath, data, "test");

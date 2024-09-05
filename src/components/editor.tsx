@@ -15,16 +15,26 @@ import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import EditorMenuBar from "./editorMenuBar";
 import { BlogPostHtmlAtom } from "@/lib/jotai/atoms";
 import { useAtom } from "jotai";
-import { CustomLink, CustomSpan, SlashCommands, slashCommandsConfig } from "@/lib/tiptap";
+import {
+  CustomLink,
+  CustomSpan,
+  SlashCommands,
+  slashCommandsConfig,
+} from "@/lib/tiptap";
 import EditorBubbleMenu from "./editorBubbleMenu";
-import { SAMPLE_CONTENT } from "@/lib/tiptap/constants";
+import {
+  DEFAULT_STYLES,
+  DEFAULT_THEME,
+  SAMPLE_CONTENT,
+} from "@/lib/tiptap/constants";
 
 const Editor = () => {
   const [html, setHtml] = useAtom(BlogPostHtmlAtom);
+  const [theme, setTheme] = useState(DEFAULT_THEME);
 
   const editor = useEditor({
     injectCSS: false,
@@ -65,12 +75,11 @@ const Editor = () => {
           Type / for commands
         </FloatingMenu>
       )}
+      <style>{theme}</style>
+      <style>{DEFAULT_STYLES}</style>
       <div className="flex flex-col gap-2 w-full">
         {editor && <EditorMenuBar editor={editor} />}
-        <EditorContent
-          editor={editor}
-          className="editor-body editor-container"
-        />
+        <EditorContent editor={editor} className="hashmark-content" />
       </div>
     </>
   );
