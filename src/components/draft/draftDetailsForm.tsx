@@ -167,7 +167,7 @@ const DraftDetailsForm = ({
             </span>
           </Button>
         </div>
-        <div className="bg-white w-full p-8">
+        <div className="bg-white w-full p-8 rounded-sm shadow-sm">
           {/* Title */}
           <FormFieldContainer>
             <Label htmlFor="title">Title</Label>

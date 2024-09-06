@@ -62,7 +62,7 @@ export const generateMetadata = async ({
       title: blogPost.title,
       description: blogPost.description,
       images: [blogPost.coverImageUrl],
-      url: `${blogPost.canonicalUrlPrefix}/${blogPost.slug}`,
+      url: `${blogPost.canonicalUrlPrefix}${blogPost.slug}`,
       type: "article",
       authors: [blogPost.authorName],
       modifiedTime: isoCreatedDate,
