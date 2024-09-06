@@ -236,3 +236,44 @@ export const getAllBlogPostsForAddress = async (
     return [];
   }
 };
+
+export const getLatestPosts = async ({
+  limit,
+}: {
+  limit: number;
+}): Promise<BlogPostPublished[]> => {
+  const TAGS_TO_FILTER = [
+    { name: IRYS_TAGS.APPLICATION_ID, values: [PLACEHOLDER_APPLICATION_ID] },
+    { name: IRYS_TAGS.CONTENT_TYPE, values: ["text/html"] },
+  ];
+
+  try {
+    const results = await irysQuery
+      .search("irys:transactions")
+      .tags(TAGS_TO_FILTER)
+      .sort("DESC")
+      .limit(limit);
+
+    const rawData = results ? (results as IrysBlogPostQueryResponse[]) : [];
+
+    const formattedPosts = rawData.map((post) => {
+      const { address, id, timestamp, tags } = post;
+      const resourceUrl = IRYS_GATEWAY_DOWNLOAD_URL(id);
+      const processedTags = processTags(tags);
+
+      const blogPost: BlogPostPublished = {
+        authorAddress: address as `0x${string}`,
+        datePublishedInMs: timestamp,
+        resourceUrl,
+        transactionId: id,
+        ...processedTags,
+      };
+      return blogPost;
+    });
+
+    return formattedPosts;
+  } catch (error) {
+    console.error("Failed to fetch posts:", error);
+    return [];
+  }
+};
