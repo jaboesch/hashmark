@@ -34,9 +34,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <div className="flex min-h-screen">
+          <div className="flex min-h-screen w-full">
             <Nav />
-            <RootContainer>{children}</RootContainer>
+            {children}
           </div>
         </Providers>
       </body>

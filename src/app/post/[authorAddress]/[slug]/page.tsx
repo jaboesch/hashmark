@@ -115,7 +115,7 @@ const Page = async ({ params }: Props) => {
     },
     datePublished: isoCreatedDate,
     dateModified: isoCreatedDate,
-  }; 
+  };
 
   return (
     <>
@@ -125,7 +125,11 @@ const Page = async ({ params }: Props) => {
       />
       <style id="hashmark-theme" dangerouslySetInnerHTML={{ __html: theme }} />
       <style id="hashmark-style" dangerouslySetInnerHTML={{ __html: style }} />
-      <div id="hashmark-body" dangerouslySetInnerHTML={{ __html: content }} />
+      <div
+        id="hashmark-body"
+        className="w-full"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     </>
   );
 };

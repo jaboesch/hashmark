@@ -1,5 +1,4 @@
 import React from "react";
-import { Nav } from "./nav";
 
 type Props = {
   children: React.ReactNode;

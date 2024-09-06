@@ -11,14 +11,17 @@ export const Nav = () => {
           <div className="relative mr-[20px] h-[45px] max-w-[180px] md:h-[60px] md:max-w-[240px]">
             <div className="relative z-10 flex size-full max-w-[180px] flex-col items-center justify-center md:max-w-[240px]">
               <Link href="/">
-                <img src="/assets/wordmark.png" className="object-contain max-h-[25px]" alt="" />
+                <img
+                  src="/assets/wordmark.png"
+                  className="object-contain max-h-[25px]"
+                  alt=""
+                />
               </Link>
             </div>
           </div>
           <ConnectButton />
         </div>
       </div>
-      <div className="h-[75px]" />
     </nav>
   );
 };
