@@ -1,16 +1,28 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import clsx from "clsx";
 import { Nav } from "@/components/nav";
 import RootContainer from "@/components/rootContainer";
 import Providers from "./providers";
-
-const inter = Inter({ subsets: ["latin"] });
+import { HASHMARK_COVER_IMAGE_URL } from "@/utils/applicationConstants";
 
 export const metadata: Metadata = {
   title: "Hashmark",
-  description: "Hashmark",
+  description:
+    "Hashmark is a decentralized blogging tool with no business model.",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://www.hashmark.xyz",
+    siteName: "Hashmark",
+    title: "Hashmark",
+    description:
+      "Hashmark is a decentralized blogging tool with no business model.",
+    images: [
+      {
+        url: HASHMARK_COVER_IMAGE_URL,
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -20,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <Providers>
           <div className="flex min-h-screen">
             <Nav />

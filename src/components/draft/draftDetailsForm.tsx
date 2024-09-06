@@ -12,6 +12,7 @@ import {
   TextArea,
 } from "../ui/form";
 import { Button } from "../ui/button";
+import { HASHMARK_COVER_IMAGE_URL } from "@/utils/applicationConstants";
 
 type Props = {
   address: string;
@@ -20,7 +21,6 @@ type Props = {
   onContinue: () => void;
 };
 
-// Schema without hard rules for length
 const schema = Joi.object({
   title: Joi.string()
     .regex(/^[^"]+$/)
@@ -47,7 +47,7 @@ const schema = Joi.object({
   coverImageUrl: Joi.string()
     .uri()
     .regex(/^[^"]+$/)
-    .required()
+    .allow("")
     .messages({
       "string.uri": "Please provide a valid URL.",
       "string.pattern.base": 'URL cannot contain double quotes (").',
@@ -120,7 +120,7 @@ const DraftDetailsForm = ({
       title: "Sample Title for Testing",
       description: "This is a sample description for testing purposes.",
       keywords: "Sample, Testing, Development",
-      coverImageUrl: "https://i.imgur.com/Qa2Q3eY.png",
+      coverImageUrl: HASHMARK_COVER_IMAGE_URL,
       slug: "sample-title-for-testing",
       authorName: "J Glitch",
     };
@@ -134,14 +134,14 @@ const DraftDetailsForm = ({
 
   const onSubmit = (data: BlogPostMetadata) => {
     // Use the default canonical URL if none is provided by the user
-    if (!data.canonicalUrlPrefix) {
+    if (!data.canonicalUrlPrefix.length) {
       data.canonicalUrlPrefix = defaultCanonicalUrlPrefix;
     }
-    if (!data.publication) {
+    if (!data.publication.length) {
       data.publication = "Default";
     }
-    if (!data.coverImageUrl) {
-      data.coverImageUrl = "TODO get default image";
+    if (!data.coverImageUrl.length) {
+      data.coverImageUrl = HASHMARK_COVER_IMAGE_URL;
     }
     setMetadata(data);
     onContinue();
@@ -173,6 +173,7 @@ const DraftDetailsForm = ({
             <Label htmlFor="title">Title</Label>
             <Input
               id="title"
+              placeholder="Your Title"
               {...register("title")}
               className={errors.title ? "border-red-500" : ""}
             />
@@ -188,6 +189,7 @@ const DraftDetailsForm = ({
             <Label htmlFor="slug">URL Slug</Label>
             <Input
               id="slug"
+              placeholder="your-title"
               {...register("slug")}
               className={errors.slug ? "border-red-500" : ""}
             />
@@ -202,6 +204,7 @@ const DraftDetailsForm = ({
             <Label htmlFor="description">Description</Label>
             <TextArea
               id="description"
+              placeholder="A brief description of your article."
               {...register("description")}
               className={errors.description ? "border-red-500" : ""}
             />
@@ -220,6 +223,7 @@ const DraftDetailsForm = ({
             <Label htmlFor="keywords">Keywords</Label>
             <Input
               id="keywords"
+              placeholder="Hashmark, Decentralized Blog, No Business Model"
               {...register("keywords")}
               className={errors.keywords ? "border-red-500" : ""}
             />
@@ -234,6 +238,7 @@ const DraftDetailsForm = ({
             <Label htmlFor="authorName">Author Name</Label>
             <Input
               id="authorName"
+              placeholder="Your Name"
               {...register("authorName")}
               className={errors.authorName ? "border-red-500" : ""}
             />
@@ -245,6 +250,7 @@ const DraftDetailsForm = ({
             <Label htmlFor="coverImageUrl">Cover Image URL</Label>
             <Input
               id="coverImageUrl"
+              placeholder={HASHMARK_COVER_IMAGE_URL}
               {...register("coverImageUrl")}
               className={errors.coverImageUrl ? "border-red-500" : ""}
             />
@@ -287,7 +293,10 @@ const DraftDetailsForm = ({
           </FormFieldContainer>
 
           <p className="text-black/50 text-xs font-mono">
-            Canonical URL: {canonicalUrlPrefix ?? defaultCanonicalUrlPrefix}
+            Canonical URL:{" "}
+            {canonicalUrlPrefix.length
+              ? canonicalUrlPrefix
+              : defaultCanonicalUrlPrefix}
             {slug}
           </p>
         </div>
