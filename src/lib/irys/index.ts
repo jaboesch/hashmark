@@ -154,7 +154,49 @@ const processTags = (tags: { name: string; value: string }[]) => {
     slug: tagObject[IRYS_TAGS.SLUG],
   };
   return processedTags;
-}
+};
+
+export const getBlogPost = async ({
+  authorAddress,
+  slug,
+}: {
+  authorAddress: string;
+  slug: string;
+}): Promise<BlogPostPublished | null> => {
+  const TAGS_TO_FILTER = [
+    { name: IRYS_TAGS.APPLICATION_ID, values: [PLACEHOLDER_APPLICATION_ID] },
+    { name: IRYS_TAGS.CONTENT_TYPE, values: ["text/html"] },
+    { name: IRYS_TAGS.SLUG, values: [slug] },
+  ];
+
+  try {
+    const results = await irysQuery
+      .search("irys:transactions")
+      .tags(TAGS_TO_FILTER)
+      .from([authorAddress])
+      .sort("DESC");
+
+    const rawData = results ? (results as IrysBlogPostQueryResponse[]) : [];
+    if (rawData.length === 0) return null;
+    // handle duplicate slugs by taking the latest value
+    const rawLatestPost = rawData.sort((a, b) => b.timestamp - a.timestamp)[0];
+
+    const resourceUrl = IRYS_GATEWAY_DOWNLOAD_URL(rawLatestPost.id);
+    const processedTags = processTags(rawLatestPost.tags);
+    const blogPost: BlogPostPublished = {
+      authorAddress: rawLatestPost.address as `0x${string}`,
+      datePublishedInMs: rawLatestPost.timestamp,
+      resourceUrl,
+      transactionId: rawLatestPost.id,
+      ...processedTags,
+    };
+
+    return blogPost;
+  } catch (error) {
+    console.error("Failed to fetch posts:", error);
+    return null;
+  }
+};
 
 export const getAllBlogPostsForAddress = async (
   walletAddress: `0x${string}`
@@ -177,7 +219,7 @@ export const getAllBlogPostsForAddress = async (
       const { address, id, timestamp, tags } = post;
       const resourceUrl = IRYS_GATEWAY_DOWNLOAD_URL(id);
       const processedTags = processTags(tags);
-      
+
       const blogPost: BlogPostPublished = {
         authorAddress: address as `0x${string}`,
         datePublishedInMs: timestamp,

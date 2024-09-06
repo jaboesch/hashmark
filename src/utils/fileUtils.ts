@@ -81,16 +81,18 @@ export const createHtmlString = ({
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         ${seoMetadataString}
-        <style>
+        <style id="hashmark-theme">
           ${theme}
         </style>
-        <style>
+        <style id="hashmark-style">
           ${styles}
         </style>
       </head>
-      <body class="hashmark-container">
-        <main class="hashmark-content">
-          ${body}
+      <body id="hashmark-body">
+        <main class="hashmark-container">
+          <div class="hashmark-content">
+            ${body}
+          </div>
         </main>
       </body>
     </html>

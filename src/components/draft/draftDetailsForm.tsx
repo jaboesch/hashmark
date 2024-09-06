@@ -97,7 +97,7 @@ const DraftDetailsForm = ({
     resolver: joiResolver(schema),
     defaultValues: metadata || {},
   });
-  const defaultCanonicalUrlPrefix = `https://www.hashmark.xyz/${address}/`;
+  const defaultCanonicalUrlPrefix = `https://www.hashmark.xyz/post/${address}/`;
   const titleValue = watch("title");
   const slug = watch("slug");
   const canonicalUrlPrefix = watch("canonicalUrlPrefix");
@@ -134,13 +134,13 @@ const DraftDetailsForm = ({
 
   const onSubmit = (data: BlogPostMetadata) => {
     // Use the default canonical URL if none is provided by the user
-    if (!data.canonicalUrlPrefix.length) {
+    if (!data.canonicalUrlPrefix?.length) {
       data.canonicalUrlPrefix = defaultCanonicalUrlPrefix;
     }
-    if (!data.publication.length) {
+    if (!data.publication?.length) {
       data.publication = "Default";
     }
-    if (!data.coverImageUrl.length) {
+    if (!data.coverImageUrl?.length) {
       data.coverImageUrl = HASHMARK_COVER_IMAGE_URL;
     }
     setMetadata(data);
@@ -294,7 +294,7 @@ const DraftDetailsForm = ({
 
           <p className="text-black/50 text-xs font-mono">
             Canonical URL:{" "}
-            {canonicalUrlPrefix.length
+            {canonicalUrlPrefix && canonicalUrlPrefix.length
               ? canonicalUrlPrefix
               : defaultCanonicalUrlPrefix}
             {slug}
