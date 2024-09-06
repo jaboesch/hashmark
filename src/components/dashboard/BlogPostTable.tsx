@@ -21,18 +21,17 @@ import {
 import { useWalletClient } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 import { getAllBlogPostsForAddress } from "@/lib/irys";
-import { BlogPost } from "@/utils/applicationTypes";
+import { BlogPost, isPublished } from "@/utils/applicationTypes";
 
-const BlogPostTableRow: React.FC<BlogPost> = ({
-  title,
-  status,
-  author,
-  createdAt,
-  resourceUrl,
-}) => {
+const BlogPostTableRow: React.FC<BlogPost> = (post) => {
+  const postIsPublished = isPublished(post);
   const copyToClipboard = async () => {
+    if (!postIsPublished) {
+      alert("Cannot copy URL for unpublished post");
+      return;
+    }
     try {
-      await navigator.clipboard.writeText(resourceUrl);
+      await navigator.clipboard.writeText(post.resourceUrl);
       console.log("URL copied to clipboard");
     } catch (err) {
       console.error("Failed to copy URL: ", err);
@@ -42,26 +41,34 @@ const BlogPostTableRow: React.FC<BlogPost> = ({
   return (
     <TableRow>
       <TableCell className="font-medium max-w-24 truncate text-ellipsis overflow-hidden text-nowrap">
-        {title}
+        {post.title}
       </TableCell>
       <TableCell>
-        <Badge variant="default">{status}</Badge>
+        <Badge variant="default">
+          {postIsPublished ? "Published" : "Draft"}
+        </Badge>
       </TableCell>
       <TableCell className="hidden md:table-cell max-w-24 truncate text-ellipsis overflow-hidden text-nowrap">
-        {author}
+        {post.authorName}
       </TableCell>
       <TableCell className="hidden md:table-cell">
-        {createdAt.toDateString()}
+        {postIsPublished
+          ? new Date(post.datePublishedInMs).toLocaleString()
+          : "-"}
       </TableCell>
       <TableCell className="hidden md:table-cell">
-        <Link
-          href={resourceUrl}
-          target="_blank"
-          rel="noopener"
-          className="underline"
-        >
-          {resourceUrl}
-        </Link>
+        {postIsPublished ? (
+          <Link
+            href={post.resourceUrl}
+            target="_blank"
+            rel="noopener"
+            className="underline"
+          >
+            {post.resourceUrl}
+          </Link>
+        ) : (
+          <p className="text-gray-400">N/A</p>
+        )}
       </TableCell>
       <TableCell>
         <Tooltip>

@@ -13,7 +13,7 @@ import { CreatePostButton } from "./CreatePostButton";
 
 export function Header() {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center mb-5">
       <TabsList>
         <TabsTrigger value="all">All</TabsTrigger>
         <TabsTrigger value="active">Published</TabsTrigger>

@@ -14,6 +14,7 @@ import {
 import { Button } from "../ui/button";
 
 type Props = {
+  address: string;
   metadata: BlogPostMetadata | null;
   setMetadata: React.Dispatch<React.SetStateAction<BlogPostMetadata | null>>;
   onContinue: () => void;
@@ -52,19 +53,40 @@ const schema = Joi.object({
       "string.pattern.base": 'URL cannot contain double quotes (").',
       "string.required": "Cover image URL is required.",
     }),
-  canonicalUrl: Joi.string().uri().allow("").messages({
+  slug: Joi.string()
+    .regex(/^[a-z0-9-]+$/)
+    .required()
+    .messages({
+      "string.pattern.base":
+        "Slug must only contain lowercase letters, numbers, and dashes.",
+      "string.required": "Slug is required.",
+    }),
+  canonicalUrlPrefix: Joi.string().uri().allow("").messages({
     "string.uri": "Please provide a valid URL.",
   }),
   authorName: Joi.string()
-    .regex(/^[a-zA-Z\s]+$/)
+    .regex(/^[a-zA-Z0-9\s]+$/)
     .required()
     .messages({
-      "string.pattern.base": "Author name can only contain letters and spaces.",
+      "string.pattern.base":
+        "Author name can only contain letters, numbers, and spaces.",
       "string.required": "Author name is required.",
+    }),
+  publication: Joi.string()
+    .regex(/^[a-zA-Z0-9\s]+$/)
+    .allow("")
+    .messages({
+      "string.pattern.base":
+        "Author name can only contain letters, numbers, and spaces.",
     }),
 });
 
-const DraftDetailsForm = ({ metadata, setMetadata, onContinue }: Props) => {
+const DraftDetailsForm = ({
+  address,
+  metadata,
+  setMetadata,
+  onContinue,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -75,48 +97,51 @@ const DraftDetailsForm = ({ metadata, setMetadata, onContinue }: Props) => {
     resolver: joiResolver(schema),
     defaultValues: metadata || {},
   });
-
-  const [previewCanonicalUrl, setPreviewCanonicalUrl] = useState(
-    "https://www.hashmark.xyz/author/slug"
-  );
-
+  const defaultCanonicalUrlPrefix = `https://www.hashmark.xyz/${address}/`;
   const titleValue = watch("title");
-  const canonicalUrlValue = watch("canonicalUrl");
+  const slug = watch("slug");
+  const canonicalUrlPrefix = watch("canonicalUrlPrefix");
 
-  // Generate the canonical URL preview from the title or use the manually set value
+  // Set a default slug based on the title
   useEffect(() => {
-    if (titleValue && !canonicalUrlValue) {
+    if (titleValue) {
       const slug = titleValue
         .toLowerCase()
         .replace(/[^a-z0-9\s]/g, "")
         .trim()
         .replace(/\s+/g, "-");
-      setPreviewCanonicalUrl(`https://www.hashmark.xyz/author/${slug}`);
+      setValue("slug", slug);
     }
-  }, [titleValue, canonicalUrlValue]);
+  }, [titleValue]);
 
   const handleDevBypass = () => {
     // Dummy data to be used in dev bypass
     const dummyData = {
       title: "Sample Title for Testing",
       description: "This is a sample description for testing purposes.",
-      keywords: "keyword1, keyword2, keyword3",
-      coverImageUrl: "https://example.com/sample-image.jpg",
-      canonicalUrl: "https://www.hashmark.xyz/author/sample-slug",
+      keywords: "Sample, Testing, Development",
+      coverImageUrl: "https://i.imgur.com/Qa2Q3eY.png",
+      slug: "sample-title-for-testing",
       authorName: "J Glitch",
     };
     setValue("title", dummyData.title);
     setValue("description", dummyData.description);
     setValue("keywords", dummyData.keywords);
     setValue("coverImageUrl", dummyData.coverImageUrl);
-    setValue("canonicalUrl", dummyData.canonicalUrl);
     setValue("authorName", dummyData.authorName);
+    setValue("slug", dummyData.slug);
   };
 
   const onSubmit = (data: BlogPostMetadata) => {
     // Use the default canonical URL if none is provided by the user
-    if (!data.canonicalUrl) {
-      data.canonicalUrl = previewCanonicalUrl;
+    if (!data.canonicalUrlPrefix) {
+      data.canonicalUrlPrefix = defaultCanonicalUrlPrefix;
+    }
+    if (!data.publication) {
+      data.publication = "Default";
+    }
+    if (!data.coverImageUrl) {
+      data.coverImageUrl = "TODO get default image";
     }
     setMetadata(data);
     onContinue();
@@ -126,7 +151,12 @@ const DraftDetailsForm = ({ metadata, setMetadata, onContinue }: Props) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="w-full flex flex-col gap-5">
         <div className="flex flex-row gap-2 w-full justify-end">
-          <Button type="button" size="lg" variant="outline" onClick={handleDevBypass}>
+          <Button
+            type="button"
+            size="lg"
+            variant="outline"
+            onClick={handleDevBypass}
+          >
             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
               DEV Prefill
             </span>
@@ -150,6 +180,20 @@ const DraftDetailsForm = ({ metadata, setMetadata, onContinue }: Props) => {
             <Message
               message="Aim for 50-60 characters and include your primary keyword."
               error={errors.title?.message}
+            />
+          </FormFieldContainer>
+
+          {/* Slug */}
+          <FormFieldContainer>
+            <Label htmlFor="slug">URL Slug</Label>
+            <Input
+              id="slug"
+              {...register("slug")}
+              className={errors.slug ? "border-red-500" : ""}
+            />
+            <Message
+              message={`This will be the article identifier in the URL.`}
+              error={errors.slug?.message}
             />
           </FormFieldContainer>
 
@@ -210,20 +254,42 @@ const DraftDetailsForm = ({ metadata, setMetadata, onContinue }: Props) => {
             />
           </FormFieldContainer>
 
-          {/* Canonical URL */}
+          {/* Publication */}
           <FormFieldContainer>
-            <Label htmlFor="canonicalUrl">Advanced: Canonical URL</Label>
+            <Label htmlFor="publication">Publication</Label>
             <Input
-              id="canonicalUrl"
-              {...register("canonicalUrl")}
-              placeholder={previewCanonicalUrl}
-              className={errors.canonicalUrl ? "border-red-500" : ""}
+              id="publication"
+              {...register("publication")}
+              placeholder="Default"
+              className={errors.publication ? "border-red-500" : ""}
             />
             <Message
-              message={`Optional. If you are cross-posting on your own domain, set the intended URL here.`}
-              error={errors.canonicalUrl?.message}
+              message={`Optional. A publication title may be used to group a series of articles.`}
+              error={errors.publication?.message}
             />
           </FormFieldContainer>
+
+          {/* Canonical URL */}
+          <FormFieldContainer>
+            <Label htmlFor="canonicalUrlPrefix">
+              Advanced: Canonical URL Prefix
+            </Label>
+            <Input
+              id="canonicalUrlPrefix"
+              {...register("canonicalUrlPrefix")}
+              placeholder={defaultCanonicalUrlPrefix}
+              className={errors.canonicalUrlPrefix ? "border-red-500" : ""}
+            />
+            <Message
+              message={`Optional. If you are cross-posting on your own domain, set the intended URL prefix here.`}
+              error={errors.canonicalUrlPrefix?.message}
+            />
+          </FormFieldContainer>
+
+          <p className="text-black/50 text-xs font-mono">
+            Canonical URL: {canonicalUrlPrefix ?? defaultCanonicalUrlPrefix}
+            {slug}
+          </p>
         </div>
       </div>
     </form>

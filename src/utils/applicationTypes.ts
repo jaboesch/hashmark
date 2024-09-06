@@ -20,20 +20,33 @@ export type ViemClient<
   >
 >;
 
-export interface BlogPost {
-  user: `0x${string}`;
-  title: string;
-  status: "Published" | "Draft";
-  author: string;
-  createdAt: Date;
-  resourceUrl: string;
-}
-
 export type BlogPostMetadata = {
-  title: string; // under 60 characters (50-60), include primary keyword, use as H1
-  description: string; // under 160 characters
+  title: string; // ideally 50-60 characters and including the primary keyword
+  description: string; // ideally 100-160 characters and including some keywords
   keywords: string; // 3-5 keywords comma and space separated (word1, phrase 2, word3)
-  canonicalUrl: string; // full url, default to hashmark
-  coverImageUrl: string; // full url
-  authorName: string; // full name
+  coverImageUrl: string;
+  authorName: string;
+  slug: string;
+  canonicalUrlPrefix: string;
+  publication: string;
 };
+
+export type BlogPostDraft = BlogPostMetadata & {
+  localStorageId: string;
+  htmlContent: string;
+};
+
+export type BlogPostPublished = BlogPostMetadata & {
+  transactionId: string;
+  authorAddress: `0x${string}`;
+  datePublishedInMs: number;
+  resourceUrl: string;
+};
+
+export type BlogPost = BlogPostDraft | BlogPostPublished;
+
+export const isDraft = (post: BlogPost): post is BlogPostDraft =>
+  (post as BlogPostDraft).localStorageId !== undefined;
+
+export const isPublished = (post: BlogPost): post is BlogPostPublished =>
+  (post as BlogPostPublished).transactionId !== undefined;

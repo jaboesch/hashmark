@@ -12,8 +12,8 @@ import {
   createHtmlString,
   createSeoMetadataString,
 } from "@/utils/fileUtils";
-import { uploadFile } from "@/lib/irys";
 import { BlogPostMetadata } from "@/utils/applicationTypes";
+import { uploadHtmlFile } from "@/lib/irys";
 
 type Props = {
   theme: string;
@@ -30,7 +30,7 @@ const DraftEditor = ({
   setHtmlContent,
   onContinue,
 }: Props) => {
-  const { data } = useWalletClient();
+  const { data: client } = useWalletClient();
   // this will hold the initial rendered value of htmlContent
   const stableHtmlContent = useRef(htmlContent);
   const [isLoading, setIsLoading] = useState(false);
@@ -66,15 +66,20 @@ const DraftEditor = ({
   };
 
   const onPublish = async () => {
-    if (!data) {
+    if (!client) {
       console.error("No wallet connection");
       alert("Please connect your wallet to publish your post.");
       return;
     }
+    if (!metadata) {
+      console.error("Incomplete metadata");
+      alert("Incomplete metadata. Please fill in all fields.");
+      return;
+    }
     try {
       setIsLoading(true);
-      const htmlFilepath = await prepareHtmlFile(htmlContent);
-      await uploadFile(htmlFilepath, data, "test");
+      const filepath = await prepareHtmlFile(htmlContent);
+      await uploadHtmlFile({ filepath, client, metadata });
       onContinue();
     } catch (error) {
       console.error("Error uploading file", error);

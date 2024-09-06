@@ -1,5 +1,6 @@
 import pica from "pica";
 import { getCurrentIsoDate } from "./dateUtils";
+import { BlogPostMetadata } from "./applicationTypes";
 
 export async function getBlobFromImageUrl(imageSrc: string) {
   const blob = await fetch(imageSrc).then((r) => r.blob());
@@ -11,19 +12,13 @@ export const createSeoMetadataString = ({
   title,
   description,
   keywords,
-  canonicalUrl,
+  canonicalUrlPrefix,
+  slug,
   coverImageUrl,
   authorName,
-}: {
-  // regex everything, only letters numbers dashes and maybe ampersands and apostrophes and commas and punctuation
-  title: string; // under 60 characters (50-60), include primary keyword, use as H1
-  description: string; // under 160 characters
-  keywords: string; // 3-5 keywords comma and space separated (word1, phrase 2, word3)
-  canonicalUrl: string; // full url, default to hashmark
-  coverImageUrl: string; // full url
-  authorName: string; // full name
-}) => {
+}: BlogPostMetadata) => {
   const currentDate = getCurrentIsoDate();
+  const canonicalUrl = `${canonicalUrlPrefix}${slug}`;
   return `
     <!-- SEO Meta Tags -->
     <title>${title}</title>

@@ -8,9 +8,15 @@ import {
   IRYS_NETWORKS,
   IRYS_PAYMENT_TOKEN_NAMES,
   IRYS_PROVIDER_TYPES,
+  IRYS_TAGS,
   PLACEHOLDER_APPLICATION_ID,
 } from "./constants";
-import { BlogPost, ViemClient } from "@/utils/applicationTypes";
+import {
+  BlogPost,
+  BlogPostMetadata,
+  BlogPostPublished,
+  ViemClient,
+} from "@/utils/applicationTypes";
 import { resizeImage } from "@/utils/fileUtils";
 
 const irysQuery = new Query({ url: IRYS_GRAPHQL_URL(IRYS_NETWORKS.MAINNET) });
@@ -61,110 +67,101 @@ async function handleFunding(webIrys: WebIrys, fileSize: number) {
   }
 }
 
-async function prepareAndUpload(
-  webIrys: WebIrys,
-  file: File,
-  contentType: string,
-  category?: string
-) {
+const prepareBlogTags = ({ metadata }: { metadata: BlogPostMetadata }) => {
   const tags = [
-    { name: "Content-Type", value: contentType },
-    { name: "application-id", value: PLACEHOLDER_APPLICATION_ID },
+    { name: IRYS_TAGS.CONTENT_TYPE, value: "text/html" },
+    { name: IRYS_TAGS.APPLICATION_ID, value: PLACEHOLDER_APPLICATION_ID },
+    { name: IRYS_TAGS.TITLE, value: metadata.title },
+    { name: IRYS_TAGS.DESCRIPTION, value: metadata.description },
+    { name: IRYS_TAGS.KEYWORDS, value: metadata.keywords },
+    { name: IRYS_TAGS.COVER_IMAGE_URL, value: metadata.coverImageUrl },
+    { name: IRYS_TAGS.AUTHOR_NAME, value: metadata.authorName },
+    {
+      name: IRYS_TAGS.CANONICAL_URL_PREFIX,
+      value: metadata.canonicalUrlPrefix,
+    },
+    { name: IRYS_TAGS.PUBLICATION, value: metadata.publication },
+    { name: IRYS_TAGS.SLUG, value: metadata.slug },
   ];
-  if (category) {
-    tags.push({ name: "category", value: category });
-  }
+  return tags;
+};
 
-  const receipt = await webIrys.uploadFile(file, { tags });
-  console.log("Logging receipt", receipt);
-  console.log(`Data uploaded ==> ${IRYS_GATEWAY_DOWNLOAD_URL(receipt.id)}`);
-  return receipt;
-}
-
-export const uploadImage = async (
-  originalBlob: Blob,
-  client: ViemClient,
-  category?: string
-) => {
+export const uploadImage = async (originalBlob: Blob, client: ViemClient) => {
   try {
     const webIrys = await getWebIrysInstance({ client });
-
     const resizedBlob = await resizeImage(originalBlob);
-
     const imageFile = new File([resizedBlob], "photo.jpg", {
       type: "image/jpeg",
     });
     console.log("Image file size: ", imageFile.size);
 
     await handleFunding(webIrys, imageFile.size);
-
-    return await prepareAndUpload(webIrys, imageFile, "image/jpeg", category);
+    const receipt = await webIrys.uploadFile(imageFile, {
+      tags: [
+        { name: IRYS_TAGS.APPLICATION_ID, value: PLACEHOLDER_APPLICATION_ID },
+        { name: IRYS_TAGS.CONTENT_TYPE, value: "image/jpeg" },
+      ],
+    });
+    return receipt;
   } catch (e) {
     console.error("Error uploading data", e);
     throw e;
   }
 };
 
-export const uploadFile = async (
-  filepath: string,
-  client: ViemClient,
-  category?: string
-) => {
+export const uploadHtmlFile = async ({
+  metadata,
+  filepath,
+  client,
+}: {
+  metadata: BlogPostMetadata;
+  filepath: string;
+  client: ViemClient;
+}) => {
   try {
     const webIrys = await getWebIrysInstance({ client });
-
     const response = await fetch(filepath);
     const blob = await response.blob();
 
-    const htmlFile = new File([blob], "document.html", {
+    const tags = prepareBlogTags({ metadata });
+    const htmlFile = new File([blob], `${metadata.slug}.html`, {
       type: "text/html",
     });
-
     console.log("HTML file size: ", htmlFile.size);
 
     await handleFunding(webIrys, htmlFile.size);
-
-    return await prepareAndUpload(webIrys, htmlFile, "text/html", category);
+    const receipt = await webIrys.uploadFile(htmlFile, { tags });
+    return receipt;
   } catch (e) {
     console.error("Error uploading data", e);
     throw e;
   }
 };
 
-export const getAllImages = async (): Promise<IrysItem[]> => {
-  const TAGS_TO_FILTER = [
-    { name: "application-id", values: [PLACEHOLDER_APPLICATION_ID] },
-    { name: "Content-Type", values: ["image/jpeg"] },
-  ];
-
-  try {
-    const results = await irysQuery
-      .search("irys:transactions")
-      .fields({
-        id: true,
-        address: true,
-        timestamp: true,
-        tags: {
-          name: true,
-          value: true,
-        },
-      })
-      .tags(TAGS_TO_FILTER)
-      .sort("DESC");
-
-    return results ? (results as IrysItem[]) : [];
-  } catch (error) {
-    console.error("Failed to fetch images:", error);
-    return [];
-  }
-};
+const processTags = (tags: { name: string; value: string }[]) => {
+  const tagObject: Record<string, string> = {};
+  tags.forEach((tag) => {
+    tagObject[tag.name] = tag.value;
+  });
+  const processedTags: BlogPostMetadata = {
+    title: tagObject[IRYS_TAGS.TITLE],
+    description: tagObject[IRYS_TAGS.DESCRIPTION],
+    keywords: tagObject[IRYS_TAGS.KEYWORDS],
+    coverImageUrl: tagObject[IRYS_TAGS.COVER_IMAGE_URL],
+    authorName: tagObject[IRYS_TAGS.AUTHOR_NAME],
+    canonicalUrlPrefix: tagObject[IRYS_TAGS.CANONICAL_URL_PREFIX],
+    publication: tagObject[IRYS_TAGS.PUBLICATION],
+    slug: tagObject[IRYS_TAGS.SLUG],
+  };
+  return processedTags;
+}
 
 export const getAllBlogPostsForAddress = async (
   walletAddress: `0x${string}`
 ): Promise<BlogPost[]> => {
   const TAGS_TO_FILTER = [
-    // { name: "application-id", values: [PLACEHOLDER_APPLICATION_ID] },
-    { name: "Content-Type", values: ["text/html"] },
+    { name: IRYS_TAGS.APPLICATION_ID, values: [PLACEHOLDER_APPLICATION_ID] },
+    { name: IRYS_TAGS.CONTENT_TYPE, values: ["text/html"] },
   ];
 
   try {
@@ -177,25 +174,23 @@ export const getAllBlogPostsForAddress = async (
     const rawData = results ? (results as IrysBlogPostQueryResponse[]) : [];
 
     const formattedPosts = rawData.map((post) => {
-      const { address, id, timestamp } = post;
-      const createdAt = new Date(timestamp);
+      const { address, id, timestamp, tags } = post;
       const resourceUrl = IRYS_GATEWAY_DOWNLOAD_URL(id);
-
-      const blogPost: BlogPost = {
-        user: address as `0x${string}`,
-        title: id,
-        status: "Published",
-        author: address,
-        createdAt,
+      const processedTags = processTags(tags);
+      
+      const blogPost: BlogPostPublished = {
+        authorAddress: address as `0x${string}`,
+        datePublishedInMs: timestamp,
         resourceUrl,
+        transactionId: id,
+        ...processedTags,
       };
-
       return blogPost;
     });
 
     return formattedPosts;
   } catch (error) {
-    console.error("Failed to fetch images:", error);
+    console.error("Failed to fetch posts:", error);
     return [];
   }
 };

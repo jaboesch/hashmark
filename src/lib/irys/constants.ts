@@ -58,4 +58,17 @@ export const IRYS_GATEWAY_DOWNLOAD_URL = (transactionId: string) =>
   `${IRYS_GATEWAY_BASE_URL}/${transactionId}`;
 
 //TODO: This is here as a random placeholder, need to replace with actual app id
-export const PLACEHOLDER_APPLICATION_ID = "1234";
+export const PLACEHOLDER_APPLICATION_ID = "hashmark-dev"; // "2c85f6b45bb02589ccfe7524c1236ba7b2715b9a98465010a5c31e5233cdd127";
+
+export enum IRYS_TAGS {
+  CONTENT_TYPE = "Content-Type",
+  APPLICATION_ID = "application-id",
+  TITLE = "title",
+  DESCRIPTION = "description",
+  KEYWORDS = "keywords",
+  COVER_IMAGE_URL = "cover-image-url",
+  AUTHOR_NAME = "author-name",
+  SLUG = "slug",
+  CANONICAL_URL_PREFIX = "canonical-url-prefix",
+  PUBLICATION = "publication",
+}
