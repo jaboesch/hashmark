@@ -1,6 +1,9 @@
-"use client";
+import dynamic from "next/dynamic";
 
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+const ConnectButtonWrapper = dynamic(() => import("./connectButtonWrapper"), {
+  ssr: false,
+});
+
 import Link from "next/link";
 
 export const Nav = () => {
@@ -13,13 +16,14 @@ export const Nav = () => {
               <Link href="/">
                 <img
                   src="/assets/wordmark.png"
+                  loading="lazy"
                   className="object-contain max-h-[25px]"
                   alt=""
                 />
               </Link>
             </div>
           </div>
-          <ConnectButton />
+          <ConnectButtonWrapper />
         </div>
       </div>
     </nav>

@@ -52,7 +52,7 @@ export const generateMetadata = async ({
      * Canonical Tag
      */
     alternates: {
-      canonical: `${blogPost.canonicalUrlPrefix}/${blogPost.slug}`,
+      canonical: `${blogPost.canonicalUrlPrefix}${blogPost.slug}`,
     },
 
     /**
