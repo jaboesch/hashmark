@@ -1,3 +1,5 @@
+"use server";
+
 import * as cheerio from "cheerio";
 import { JSDOM } from "jsdom";
 import createDOMPurify from "dompurify";

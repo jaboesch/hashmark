@@ -12,7 +12,7 @@ const Page = async () => {
     <div className="py-24 md:px-10 w-full bg-gray-100">
       <main className="flex h-full w-full flex-col ">
         <div className="flex flex-col gap-5 mx-auto max-w-[800px]">
-          <Link href="/draft" className="underline">
+          <Link href="/dashboard" className="underline">
             Go to Dashboard
           </Link>
           <h1 className="text-4xl font-bold">Latest Posts</h1>

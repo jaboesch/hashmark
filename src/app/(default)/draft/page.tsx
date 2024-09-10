@@ -1,17 +1,23 @@
 "use client";
 
+import { processHtml } from "@/app/actions/processHtml";
 import DraftDetailsForm from "@/components/draft/draftDetailsForm";
 import DraftEditor from "@/components/draft/draftEditor";
 import DraftPublishConfirmation from "@/components/draft/draftPublishConfirmation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getBlogPostById } from "@/lib/irys";
 import { DEFAULT_THEME, SAMPLE_CONTENT } from "@/lib/tiptap/constants";
 import { BlogPostMetadata } from "@/utils/applicationTypes";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
-type Props = {};
+type Props = {
+  searchParams?: {
+    templateId?: string;
+  };
+};
 
-const Page = (props: Props) => {
+const Page = ({ searchParams }: Props) => {
   enum DraftStage {
     DETAILS = "Details",
     EDITOR = "Editor",
@@ -22,9 +28,48 @@ const Page = (props: Props) => {
   const [stage, setStage] = useState<string>(DraftStage.DETAILS);
   const [metadata, setMetadata] = useState<BlogPostMetadata | null>(null);
   const [htmlContent, setHtmlContent] = useState<string>(SAMPLE_CONTENT);
+  const [isTemplateLoading, setIsTemplateLoading] = useState<boolean>(false);
+
+  const fetchTemplate = useCallback(async () => {
+    if (searchParams?.templateId) {
+      try {
+        setIsTemplateLoading(true);
+        const post = await getBlogPostById({
+          transactionId: searchParams.templateId,
+        });
+        if (!post) throw new Error("Post not found");
+        const postHtml = await processHtml(post.resourceUrl);
+        if (!postHtml) throw new Error("Post not found");
+        setMetadata({
+          title: post.title,
+          description: post.description,
+          keywords: post.keywords,
+          coverImageUrl: post.coverImageUrl,
+          authorName: post.authorName,
+          canonicalUrlPrefix: post.canonicalUrlPrefix,
+          publication: post.publication,
+          slug: post.slug,
+        });
+        setHtmlContent(postHtml.content);
+      } catch (error) {
+        alert("Error duplicating template");
+        console.error("Error duplicating template", error);
+      } finally {
+        setIsTemplateLoading(false);
+      }
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (fetchTemplate) fetchTemplate();
+  }, [fetchTemplate]);
 
   if (!address) {
     return <div>Connect your wallet to create a draft.</div>;
+  }
+
+  if (isTemplateLoading) {
+    return <div>Loading template...</div>;
   }
 
   return (

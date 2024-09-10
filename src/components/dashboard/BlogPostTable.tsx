@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Clipboard, Wallet2 } from "lucide-react";
+import { Clipboard, PlusCircle, Wallet2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -84,6 +84,21 @@ const BlogPostTableRow: React.FC<BlogPost> = (post) => {
             <p>Copy URL</p>
           </TooltipContent>
         </Tooltip>
+        {isPublished(post) && (
+          <Tooltip>
+            <TooltipTrigger>
+              <Link
+                href={`/draft?templateId=${post.transactionId}`}
+                className="active:scale-90 transition duration-150 ease-out"
+              >
+                <PlusCircle size={18} />
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Duplicate Post</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
       </TableCell>
     </TableRow>
   );
