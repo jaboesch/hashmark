@@ -9,13 +9,15 @@ const Page = async () => {
   const posts = await getLatestPosts({ limit: 5 });
 
   return (
-    <div className="py-24 md:px-10 w-full bg-gray-100">
-      <main className="flex h-full w-full flex-col ">
-        <div className="flex flex-col gap-5 mx-auto max-w-[800px]">
+    <div className="py-24 md:px-10 w-full bg-[#fcfcfc]">
+      <main className="flex h-full w-full flex-col">
+        <div className="flex flex-col gap-10 md:gap-5 mx-auto max-w-[900px]">
           <Link href="/dashboard" className="underline">
             Go to Dashboard
           </Link>
-          <h1 className="text-4xl font-bold">Latest Posts</h1>
+          <h1 className="text-4xl font-[monaco] uppercase tracking-wider font-bold mb-5 text-center">
+            Latest Posts
+          </h1>
           {posts.map((post) => (
             <PostCard post={post} key={post.transactionId} />
           ))}
