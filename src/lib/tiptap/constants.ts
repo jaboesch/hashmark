@@ -1,18 +1,27 @@
 export const DEFAULT_THEME = `
 :root {
-    --primaryFonts: Verdana, Geneva, Tahoma, sans-serif;
-    --quoteFonts: Monaco, monospace;
     --containerBgColor: #ffffff;
     --contentBgColor: #ffffff;
     --contentBorderColor: #ffffff00;
-    --accentBgColor: #333;
-    --accentTextColor: #ffffff;
+    --primaryFontFamily: Verdana, Geneva, Tahoma, sans-serif;
     --primaryTextColor: #333;
     --linkTextColor: #555;
+    --headingFontFamily: Verdana, Geneva, Tahoma, sans-serif;
+    --tagFontFamily: Verdana, Geneva, Tahoma, sans-serif;
+    --tagBgColor: #333;
+    --tagBorderColor: #333;
+    --tagTextColor: #ffffff;
+    --horizontalRuleColor: #333;
+    --blockBorderColor: #333;
+    --buttonFontFamily: Verdana, Geneva, Tahoma, sans-serif;
+    --buttonBgColor: #333;
+    --buttonTextColor: #ffffff;
+    --quoteFontFamily: Monaco, monospace;
     --quoteBgColor: #eee;
     --quoteTextColor: #333;
     --codeBgColor: #eee;
     --codeTextColor: #333;
+    --captionFontFamily: Verdana, Geneva, Tahoma, sans-serif;
     --captionTextColor: #777;
   }
 `;
@@ -24,7 +33,7 @@ export const DEFAULT_STYLES = `
   }
 
   .hashmark-content {
-    font-family: var(--primaryFonts);
+    font-family: var(--primaryFontFamily);
     line-height: 1.6;
     max-width: 800px;
     margin: auto;
@@ -47,8 +56,9 @@ export const DEFAULT_STYLES = `
     }
 
     .button-link {
-      background-color: var(--accentBgColor);
-      color: var(--accentTextColor);
+      font-family: var(--buttonFontFamily);
+      background-color: var(--buttonBgColor);
+      color: var(--buttonTextColor);
       padding: 10px 20px;
       margin-left: auto;
       margin-right: auto;
@@ -61,18 +71,21 @@ export const DEFAULT_STYLES = `
     }
 
     h1 {
+      font-family: var(--headingFontFamily);
       font-size: 1.875em;
       font-weight: 600;
       margin-bottom: 0.6em;
     }
 
     h2 {
+      font-family: var(--headingFontFamily);
       font-size: 1.5em;
       font-weight: 600;
       margin-bottom: 0.5em;
     }
 
     h3 {
+      font-family: var(--headingFontFamily);
       font-size: 1.25em;
       font-weight: 600;
       margin-bottom: 0.5em;
@@ -96,7 +109,7 @@ export const DEFAULT_STYLES = `
       white-space: pre-wrap;
       background-color: var(--codeBgColor);
       color: var(--codeTextColor);
-      border-left: 3px solid var(--accentBgColor);
+      border-left: 3px solid var(--blockBorderColor);
     }
 
     strong,
@@ -138,11 +151,11 @@ export const DEFAULT_STYLES = `
     }
 
     blockquote {
-      font-family: var(--quoteFonts);
+      font-family: var(--quoteFontFamily);
       font-size: 16px;
       color: var(--quoteTextColor);
       background-color: var(--quoteBgColor);
-      border-left: 4px solid var(--accentBgColor);
+      border-left: 4px solid var(--blockBorderColor);
       margin: 20px 0;
       padding: 10px;
 
@@ -154,7 +167,7 @@ export const DEFAULT_STYLES = `
     hr {
       border: none;
       height: 1px;
-      background-color: var(--accentBgColor);
+      background-color: var(--horizontalRuleColor);
       margin: 2em 0;
     }
 
@@ -189,6 +202,7 @@ export const DEFAULT_STYLES = `
     }
 
     .caption {
+      font-family: var(--captionFontFamily);
       display: inline-block;
       color: var(--captionTextColor);
       font-weight: lighter;
@@ -197,11 +211,12 @@ export const DEFAULT_STYLES = `
     }
 
     .tag {
+      font-family: var(--tagFontFamily);
       display: block;
-      background-color: var(--accentBgColor);
-      color: var(--accentTextColor);
+      background-color: var(--tagBgColor);
+      color: var(--tagTextColor);
       width: fit-content;
-      border: 1px solid var(--accentTextColor);
+      border: 1px solid var(--tagBorderColor);
       padding: 4px 8px;
       border-radius: 4px;
       font-size: 15px;

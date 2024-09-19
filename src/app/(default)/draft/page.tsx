@@ -4,6 +4,7 @@ import { processHtml } from "@/app/actions/processHtml";
 import DraftDetailsForm from "@/components/draft/draftDetailsForm";
 import DraftEditor from "@/components/draft/draftEditor";
 import DraftPublishConfirmation from "@/components/draft/draftPublishConfirmation";
+import ThemeForm from "@/components/draft/draftThemeForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getBlogPostById } from "@/lib/irys";
 import { DEFAULT_THEME, SAMPLE_CONTENT } from "@/lib/tiptap/constants";
@@ -20,6 +21,7 @@ type Props = {
 const Page = ({ searchParams }: Props) => {
   enum DraftStage {
     DETAILS = "Details",
+    THEME = "Theme",
     EDITOR = "Editor",
     CONFIRMATION = "Confirmation",
   }
@@ -27,6 +29,7 @@ const Page = ({ searchParams }: Props) => {
   const { address } = useAccount();
   const [stage, setStage] = useState<string>(DraftStage.DETAILS);
   const [metadata, setMetadata] = useState<BlogPostMetadata | null>(null);
+  const [theme, setTheme] = useState<string>(DEFAULT_THEME);
   const [htmlContent, setHtmlContent] = useState<string>(SAMPLE_CONTENT);
   const [isTemplateLoading, setIsTemplateLoading] = useState<boolean>(false);
 
@@ -51,6 +54,7 @@ const Page = ({ searchParams }: Props) => {
           slug: post.slug,
         });
         setHtmlContent(postHtml.content);
+        setTheme(postHtml.theme);
       } catch (error) {
         alert("Error duplicating template");
         console.error("Error duplicating template", error);
@@ -78,6 +82,7 @@ const Page = ({ searchParams }: Props) => {
         <Tabs value={stage} onValueChange={(value) => setStage(value)}>
           <TabsList className="gap-2 h-10 absolute">
             <TabsTrigger value={DraftStage.DETAILS}>Details</TabsTrigger>
+            <TabsTrigger value={DraftStage.THEME}>Theme</TabsTrigger>
             <TabsTrigger value={DraftStage.EDITOR} disabled={!metadata}>
               Editor
             </TabsTrigger>
@@ -93,12 +98,21 @@ const Page = ({ searchParams }: Props) => {
               address={address}
               metadata={metadata}
               setMetadata={setMetadata}
-              onContinue={() => setStage(DraftStage.EDITOR)}
+              onContinue={() => setStage(DraftStage.THEME)}
+            />
+          </TabsContent>
+          <TabsContent value={DraftStage.THEME} className="animate-fade-in">
+            <ThemeForm
+              theme={theme}
+              onSubmit={(theme: string) => {
+                setTheme(theme);
+                setStage(DraftStage.EDITOR);
+              }}
             />
           </TabsContent>
           <TabsContent value={DraftStage.EDITOR} className="animate-fade-in">
             <DraftEditor
-              theme={DEFAULT_THEME}
+              theme={theme}
               metadata={metadata}
               htmlContent={htmlContent}
               setHtmlContent={setHtmlContent}
