@@ -48,6 +48,10 @@ export const DEFAULT_STYLES = `
       margin-bottom: 0.6em;
     }
 
+    p:empty {
+      height: 1em;
+    }
+
     .default-link {
       text-decoration: underline;
       text-underline-offset: 2px;
