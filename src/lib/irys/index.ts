@@ -9,7 +9,9 @@ import {
   IRYS_PAYMENT_TOKEN_NAMES,
   IRYS_PROVIDER_TYPES,
   IRYS_TAGS,
-  PLACEHOLDER_APPLICATION_ID,
+  APPLICATION_ID,
+  APPLICATION_ID_DEV,
+  APPLICATION_ID_PROD,
 } from "./constants";
 import {
   BlogPost,
@@ -70,7 +72,7 @@ async function handleFunding(webIrys: WebIrys, fileSize: number) {
 const prepareBlogTags = ({ metadata }: { metadata: BlogPostMetadata }) => {
   const tags = [
     { name: IRYS_TAGS.CONTENT_TYPE, value: "text/html" },
-    { name: IRYS_TAGS.APPLICATION_ID, value: PLACEHOLDER_APPLICATION_ID },
+    { name: IRYS_TAGS.APPLICATION_ID, value: APPLICATION_ID },
     { name: IRYS_TAGS.TITLE, value: metadata.title },
     { name: IRYS_TAGS.DESCRIPTION, value: metadata.description },
     { name: IRYS_TAGS.KEYWORDS, value: metadata.keywords },
@@ -98,7 +100,7 @@ export const uploadImage = async (originalBlob: Blob, client: ViemClient) => {
     await handleFunding(webIrys, imageFile.size);
     const receipt = await webIrys.uploadFile(imageFile, {
       tags: [
-        { name: IRYS_TAGS.APPLICATION_ID, value: PLACEHOLDER_APPLICATION_ID },
+        { name: IRYS_TAGS.APPLICATION_ID, value: APPLICATION_ID },
         { name: IRYS_TAGS.CONTENT_TYPE, value: "image/jpeg" },
       ],
     });
@@ -157,12 +159,15 @@ const processTags = (tags: { name: string; value: string }[]) => {
 };
 
 export const getBlogPostById = async ({
-  transactionId
+  transactionId,
 }: {
   transactionId: string;
 }): Promise<BlogPostPublished | null> => {
   const TAGS_TO_FILTER = [
-    { name: IRYS_TAGS.APPLICATION_ID, values: [PLACEHOLDER_APPLICATION_ID] },
+    {
+      name: IRYS_TAGS.APPLICATION_ID,
+      values: [APPLICATION_ID_DEV, APPLICATION_ID_PROD],
+    },
     { name: IRYS_TAGS.CONTENT_TYPE, values: ["text/html"] },
   ];
 
@@ -202,7 +207,7 @@ export const getBlogPost = async ({
   slug: string;
 }): Promise<BlogPostPublished | null> => {
   const TAGS_TO_FILTER = [
-    { name: IRYS_TAGS.APPLICATION_ID, values: [PLACEHOLDER_APPLICATION_ID] },
+    { name: IRYS_TAGS.APPLICATION_ID, values: [APPLICATION_ID] },
     { name: IRYS_TAGS.CONTENT_TYPE, values: ["text/html"] },
     { name: IRYS_TAGS.SLUG, values: [slug] },
   ];
@@ -240,7 +245,7 @@ export const getAllBlogPostsForAddress = async (
   walletAddress: `0x${string}`
 ): Promise<BlogPost[]> => {
   const TAGS_TO_FILTER = [
-    { name: IRYS_TAGS.APPLICATION_ID, values: [PLACEHOLDER_APPLICATION_ID] },
+    { name: IRYS_TAGS.APPLICATION_ID, values: [APPLICATION_ID] },
     { name: IRYS_TAGS.CONTENT_TYPE, values: ["text/html"] },
   ];
 
@@ -281,7 +286,7 @@ export const getLatestPosts = async ({
   limit: number;
 }): Promise<BlogPostPublished[]> => {
   const TAGS_TO_FILTER = [
-    { name: IRYS_TAGS.APPLICATION_ID, values: [PLACEHOLDER_APPLICATION_ID] },
+    { name: IRYS_TAGS.APPLICATION_ID, values: [APPLICATION_ID] },
     { name: IRYS_TAGS.CONTENT_TYPE, values: ["text/html"] },
   ];
 
