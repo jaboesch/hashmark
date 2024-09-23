@@ -114,24 +114,6 @@ const DraftDetailsForm = ({
     }
   }, [titleValue]);
 
-  const handleDevBypass = () => {
-    // Dummy data to be used in dev bypass
-    const dummyData = {
-      title: "Sample Title for Testing",
-      description: "This is a sample description for testing purposes.",
-      keywords: "Sample, Testing, Development",
-      coverImageUrl: HASHMARK_COVER_IMAGE_URL,
-      slug: "sample-title-for-testing",
-      authorName: "J Glitch",
-    };
-    setValue("title", dummyData.title);
-    setValue("description", dummyData.description);
-    setValue("keywords", dummyData.keywords);
-    setValue("coverImageUrl", dummyData.coverImageUrl);
-    setValue("authorName", dummyData.authorName);
-    setValue("slug", dummyData.slug);
-  };
-
   const onSubmit = (data: BlogPostMetadata) => {
     // Use the default canonical URL if none is provided by the user
     if (!data.canonicalUrlPrefix?.length) {
@@ -151,16 +133,6 @@ const DraftDetailsForm = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="w-full flex flex-col gap-5">
         <div className="flex flex-row gap-2 w-full justify-end">
-          <Button
-            type="button"
-            size="lg"
-            variant="outline"
-            onClick={handleDevBypass}
-          >
-            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              DEV Prefill
-            </span>
-          </Button>
           <Button size="lg" type="submit">
             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
               Save

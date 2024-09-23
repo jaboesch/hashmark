@@ -1,6 +1,7 @@
 import pica from "pica";
 import { getCurrentIsoDate } from "./dateUtils";
 import { BlogPostMetadata } from "./applicationTypes";
+import { DEFAULT_STYLES } from "@/lib/tiptap/constants";
 
 export async function getBlobFromImageUrl(imageSrc: string) {
   const blob = await fetch(imageSrc).then((r) => r.blob());
@@ -148,3 +149,22 @@ export async function createHtmlFile(htmlString: string): Promise<string> {
 
   return url;
 }
+
+export const prepareHtmlFile = async ({
+  htmlContent,
+  theme,
+  metadata,
+}: {
+  htmlContent: string;
+  theme: string;
+  metadata: BlogPostMetadata;
+}) => {
+  const styledHtml = createHtmlString({
+    body: htmlContent,
+    styles: DEFAULT_STYLES,
+    theme: theme,
+    seoMetadataString: createSeoMetadataString(metadata),
+  });
+  const htmlFilepath = await createHtmlFile(styledHtml);
+  return htmlFilepath;
+};

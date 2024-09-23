@@ -26,12 +26,11 @@ const DraftManager = ({ templateId }: { templateId?: string }) => {
   const [theme, setTheme] = useState<string>(DEFAULT_THEME);
   const [htmlContent, setHtmlContent] = useState<string>(SAMPLE_CONTENT);
   const [isTemplateLoading, setIsTemplateLoading] = useState<boolean>(false);
+  const [postId, setPostId] = useState<string | null>(null);
 
   const fetchTemplate = useCallback(async () => {
-    console.log(templateId);
     if (templateId) {
       try {
-        console.log("trying", templateId);
         setIsTemplateLoading(true);
         const post = await getBlogPostById({
           transactionId: templateId,
@@ -76,9 +75,16 @@ const DraftManager = ({ templateId }: { templateId?: string }) => {
     <div className="flex mx-auto flex-col justify-center w-full gap-5 max-w-[800px]">
       <Tabs value={stage} onValueChange={(value) => setStage(value)}>
         <TabsList className="gap-2 h-10 absolute">
-          <TabsTrigger value={DraftStage.DETAILS}>Details</TabsTrigger>
-          <TabsTrigger value={DraftStage.THEME}>Theme</TabsTrigger>
-          <TabsTrigger value={DraftStage.EDITOR} disabled={!metadata}>
+          <TabsTrigger value={DraftStage.DETAILS} disabled={!!postId}>
+            Details
+          </TabsTrigger>
+          <TabsTrigger value={DraftStage.THEME} disabled={!!postId}>
+            Theme
+          </TabsTrigger>
+          <TabsTrigger
+            value={DraftStage.EDITOR}
+            disabled={!metadata || !!postId}
+          >
             Editor
           </TabsTrigger>
           <TabsTrigger
@@ -118,7 +124,13 @@ const DraftManager = ({ templateId }: { templateId?: string }) => {
           value={DraftStage.CONFIRMATION}
           className="animate-fade-in"
         >
-          <DraftPublishConfirmation />
+          <DraftPublishConfirmation
+            htmlContent={htmlContent}
+            metadata={metadata}
+            theme={theme}
+            postId={postId}
+            setPostId={(id: string) => setPostId(id)}
+          />
         </TabsContent>
       </Tabs>
     </div>

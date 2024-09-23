@@ -6,14 +6,8 @@ import { DEFAULT_STYLES } from "@/lib/tiptap/constants";
 import { Button } from "../ui/button";
 import { Send } from "lucide-react";
 import { LuEye } from "react-icons/lu";
-import { useWalletClient } from "wagmi";
-import {
-  createHtmlFile,
-  createHtmlString,
-  createSeoMetadataString,
-} from "@/utils/fileUtils";
+import { prepareHtmlFile } from "@/utils/fileUtils";
 import { BlogPostMetadata } from "@/utils/applicationTypes";
-import { uploadHtmlFile } from "@/lib/irys";
 
 type Props = {
   theme: string;
@@ -30,7 +24,6 @@ const DraftEditor = ({
   setHtmlContent,
   onContinue,
 }: Props) => {
-  const { data: client } = useWalletClient();
   // this will hold the initial rendered value of htmlContent
   const stableHtmlContent = useRef(htmlContent);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,51 +33,19 @@ const DraftEditor = ({
     setHtmlContent(html);
   };
 
-  const prepareHtmlFile = async (html: string) => {
-    if (!metadata) throw new Error("Incomplete metadata");
-    const styledHtml = createHtmlString({
-      body: html,
-      styles: DEFAULT_STYLES,
-      theme: theme,
-      seoMetadataString: createSeoMetadataString(metadata),
-    });
-    const htmlFilepath = await createHtmlFile(styledHtml);
-    return htmlFilepath;
-  };
-
   const onPreview = async () => {
     try {
+      if (!metadata) throw new Error("Incomplete metadata");
       setIsLoading(true);
-      const htmlFilepath = await prepareHtmlFile(htmlContent);
+      const htmlFilepath = await prepareHtmlFile({
+        htmlContent,
+        theme,
+        metadata,
+      });
       window.open(htmlFilepath, "_blank");
     } catch (error) {
       console.error("Error opening preview", error);
       alert("An error occurred while opening the preview. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const onPublish = async () => {
-    if (!client) {
-      console.error("No wallet connection");
-      alert("Please connect your wallet to publish your post.");
-      return;
-    }
-    if (!metadata) {
-      console.error("Incomplete metadata");
-      alert("Incomplete metadata. Please fill in all fields.");
-      return;
-    }
-    try {
-      setIsLoading(true);
-      const filepath = await prepareHtmlFile(htmlContent);
-      await uploadHtmlFile({ filepath, client, metadata });
-      onContinue();
-    } catch (error) {
-      console.error("Error uploading file", error);
-      alert("An error occurred while publishing your post. Please try again.");
-      return;
     } finally {
       setIsLoading(false);
     }
@@ -106,10 +67,10 @@ const DraftEditor = ({
             Preview
           </span>
         </Button>
-        <Button size="lg" onClick={onPublish} disabled={isLoading}>
+        <Button size="lg" onClick={onContinue} disabled={isLoading}>
           <Send className="h-3.5 w-3.5 mr-2" />
           <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-            Publish
+            Continue
           </span>
         </Button>
       </div>
