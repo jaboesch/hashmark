@@ -64,7 +64,7 @@ export const createSeoMetadataString = ({
 `;
 };
 
-export const createHtmlString = ({
+const createHtmlString = ({
   body,
   styles,
   theme,
@@ -75,6 +75,15 @@ export const createHtmlString = ({
   theme: string;
   seoMetadataString: string;
 }) => {
+  // handle the case where the body is already wrapped in a hashmark-container (likely from a template)
+  const bodyContent = body.includes("hashmark-container")
+    ? body
+    : `<main class="hashmark-container">
+          <div class="hashmark-content">
+            ${body}
+          </div>
+        </main>`;
+
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -90,11 +99,7 @@ export const createHtmlString = ({
         </style>
       </head>
       <body id="hashmark-body">
-        <main class="hashmark-container">
-          <div class="hashmark-content">
-            ${body}
-          </div>
-        </main>
+        ${bodyContent}
       </body>
     </html>
   `;
