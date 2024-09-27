@@ -1,3 +1,4 @@
+import { IS_DEV } from "@/utils/applicationConstants";
 import { IrysNetworkId, IrysNodeUrl } from "./types";
 
 export const IRYS_PAYMENT_TOKEN_NAMES = {
@@ -60,7 +61,7 @@ export const IRYS_GATEWAY_DOWNLOAD_URL = (transactionId: string) =>
 export const APPLICATION_ID_DEV = "hashmark-dev";
 export const APPLICATION_ID_PROD =
   "2c85f6b45bb02589ccfe7524c1236ba7b2715b9a98465010a5c31e5233cdd127";
-export const APPLICATION_ID = APPLICATION_ID_PROD;
+export const APPLICATION_ID = IS_DEV ? APPLICATION_ID_DEV : APPLICATION_ID_PROD;
 
 export enum IRYS_TAGS {
   CONTENT_TYPE = "Content-Type",

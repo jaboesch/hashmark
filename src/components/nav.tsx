@@ -1,3 +1,4 @@
+import { IS_DEV } from "@/utils/applicationConstants";
 import dynamic from "next/dynamic";
 
 const ConnectButtonWrapper = dynamic(() => import("./connectButtonWrapper"), {
@@ -20,6 +21,7 @@ export const Nav = () => {
                   className="object-contain max-h-[25px]"
                   alt=""
                 />
+                {IS_DEV && <p className="m-0 text-sm absolute p-0 font-light text-gray-300">DEV</p>}
               </Link>
             </div>
           </div>
