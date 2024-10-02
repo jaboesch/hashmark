@@ -40,7 +40,11 @@ const Editor = ({
       }),
       CustomLink,
       Underline,
-      Image,
+      Image.configure({
+        HTMLAttributes: {
+          loading: "lazy",
+        },
+      }),
       CustomSpan,
       Table,
       TableCell,
@@ -67,7 +71,10 @@ const Editor = ({
         </FloatingMenu>
       )}
       {editor && <EditorMenuBar editor={editor} />}
-      <EditorContent editor={editor} className="hashmark-content shadow-sm rounded-sm" />
+      <EditorContent
+        editor={editor}
+        className="hashmark-content shadow-sm rounded-sm"
+      />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { Editor } from "@tiptap/react";
-import React from "react";
+import React, { useState } from "react";
 import EditorButton from "./editorButton";
 import { MdHorizontalRule } from "react-icons/md";
 import { BsImage, BsImages } from "react-icons/bs";
@@ -20,21 +20,29 @@ import {
   LuUndo2,
 } from "react-icons/lu";
 import { PLACEHOLDER_IMAGE_ROW } from "@/lib/tiptap/constants";
+import ImageModal from "./imageModal";
+import { set } from "react-hook-form";
 
 type Props = {
   editor: Editor;
 };
 
 const EditorMenuBar = ({ editor }: Props) => {
-  const addImage = () => {
-    const url = window.prompt("Enter the URL for the image:");
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+
+  const addImage = () => setIsImageModalOpen(true);
+
+  const onImageFormSubmit = ({ src, alt }: { src: string; alt: string }) => {
+    editor.chain().focus().setImage({ src, alt }).run();
   };
 
   return (
     <div className="bg-white rounded-sm shadow-sm w-full max-w-[800px] mx-auto flex flex-row flex-wrap gap-1 p-2 align-middle justify-between ">
+      <ImageModal
+        isOpen={isImageModalOpen}
+        onSubmit={onImageFormSubmit}
+        onRequestClose={() => setIsImageModalOpen(false)}
+      />
       <EditorButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         isDisabled={!editor.can().chain().focus().toggleBold().run()}
