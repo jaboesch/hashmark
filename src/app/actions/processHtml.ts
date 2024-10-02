@@ -28,7 +28,9 @@ export async function processHtml(url: string) {
     // Sanitize the HTML
     const theme = DOMPurify.sanitize(unsafeTheme);
     const style = DOMPurify.sanitize(unsafeStyle);
-    const content = DOMPurify.sanitize(unsafeContent);
+    const content = DOMPurify.sanitize(unsafeContent, {
+      ADD_ATTR: ["target", "rel"],
+    });
 
     return {
       theme,
