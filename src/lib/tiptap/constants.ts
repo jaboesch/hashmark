@@ -34,7 +34,7 @@ export const DEFAULT_STYLES = `
 
   .hashmark-content {
     font-family: var(--primaryFontFamily);
-    line-height: 1.6;
+    font-size: 18px;
     max-width: 800px;
     margin: auto;
     padding: 2rem;
@@ -45,6 +45,7 @@ export const DEFAULT_STYLES = `
     border: 1px solid var(--contentBorderColor);
 
     p {
+      line-height: 1.6;
       margin-bottom: 0.6em;
     }
 
@@ -156,7 +157,6 @@ export const DEFAULT_STYLES = `
 
     blockquote {
       font-family: var(--quoteFontFamily);
-      font-size: 16px;
       color: var(--quoteTextColor);
       background-color: var(--quoteBgColor);
       border-left: 4px solid var(--blockBorderColor);
@@ -223,7 +223,7 @@ export const DEFAULT_STYLES = `
       border: 1px solid var(--tagBorderColor);
       padding: 4px 8px;
       border-radius: 4px;
-      font-size: 15px;
+      font-size: 16px;
       margin-top: 20px;
       margin-bottom: 5px;
     }
